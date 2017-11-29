@@ -1,0 +1,10 @@
+#Project files
+*.exe
+*.swp
+*.a
+*.dll
+obj/
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+
