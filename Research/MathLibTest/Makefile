@@ -1,7 +1,7 @@
 #MathLib build makefile and build test program
 
 CXX=g++
-CFLAGS=-I
+CFLAGS=-std=gnu++11
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
@@ -25,7 +25,7 @@ mathlib.a:
 	cp $(MATHLIBPATH)/mathlib.a $(OBJDIR)/mathlib.a
 
 mathlibtest.o: mathlibtest.cpp
-	$(CXX) -I$(FRAMEWORKPATH) -c mathlibtest.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c mathlibtest.cpp
 	mv mathlibtest.o $(OBJDIR)/mathlibtest.o
 
 .PHONY: clean

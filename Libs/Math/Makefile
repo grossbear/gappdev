@@ -2,7 +2,7 @@
 
 CXX=g++
 ARCH=ar
-CFLAGS=-I
+CFLAGS=-std=gnu++11
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
@@ -18,7 +18,7 @@ mathlib.a: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 	$(ARCH) rcs $@ $^
 	
 MathPrim.o: $(MATHPATH)/MathPrim.cpp
-	$(CXX) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MathPrim.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MathPrim.cpp
 	mv MathPrim.o $(OBJDIR)/MathPrim.o
 
 .PHONY: clean
