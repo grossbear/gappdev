@@ -17,7 +17,7 @@
 #include "MathLibDefs.h"
 
 #include "MathPrim.h"
-//#include "Sqrt.h"
+#include "Sqrt.h"
 //#include "Trigonometry.h"
 
 //#include "half.h"

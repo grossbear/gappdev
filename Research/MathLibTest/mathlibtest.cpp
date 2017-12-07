@@ -27,6 +27,9 @@ int main()
     
     float fval2 = mclamp(3.f,6.f,1.f);
     int ival2 = mclamp(-3,9,2);
+    
+    float ressqr = m_tsqrt(4.f);
+    printf("sqrt = %.6f",ressqr);
 
     return 0;
 }

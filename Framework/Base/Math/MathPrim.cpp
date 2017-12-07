@@ -21,21 +21,6 @@
 
 #include "MathPrim.h"
 
-// INTORFLOAT Union For Easy Access To Bits Of A Float.
-typedef union tINTFLOAT
-{
-    int32t  i;          // As Integer
-    float   f;          // As Float
-    struct              // As Bit Fields
-    {
-        unsigned int    sign:1;
-        unsigned int    biasedexponent:8;
-        unsigned int    significand;
-    }
-    bits;
-}
-INTFLOAT;
-
 // Bias Constant Used For Fast Conversions Between Int And Float. First Element
 // In INTORFLOAT Union Is Integer -- We Are Storing Biased Exponent 23, Mantissa .1, Which
 // Is Equivalent To 1.5 x 2^23. 

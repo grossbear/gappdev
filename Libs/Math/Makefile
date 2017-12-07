@@ -7,7 +7,7 @@ OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 
-_OBJ = MathPrim.o
+_OBJ = MathPrim.o Sqrt.o
 
 all: MakeDir $(_OBJ) mathlib.a 
 
@@ -20,6 +20,10 @@ mathlib.a: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 MathPrim.o: $(MATHPATH)/MathPrim.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MathPrim.cpp
 	mv MathPrim.o $(OBJDIR)/MathPrim.o
+
+Sqrt.o: $(MATHPATH)/Sqrt.cpp $(MATHPATH)/MathPrim.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Sqrt.cpp
+	mv Sqrt.o $(OBJDIR)/Sqrt.o
 
 .PHONY: clean
 
