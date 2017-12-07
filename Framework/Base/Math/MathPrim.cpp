@@ -11,7 +11,7 @@
 
 #include "Base/Common/PlatformTypes.h"
 
-#include "MathConsts.h"
+#include "MathConst.h"
 #include "MathLibDefs.h"
 
 #ifdef MATH_PRIM_SSE 
@@ -49,7 +49,7 @@ M_API float mitof(int32t i)
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API float     mmakef(int32t sign, int32t exp, int32t mant)
+M_API float mmakef(int32t sign, int32t exp, int32t mant)
 {
     int32t i = (sign << 31) | ((exp & 255) << 23) | (mant & ((1 << 23) - 1));
     float f = *(float*)&i;
@@ -57,7 +57,7 @@ M_API float     mmakef(int32t sign, int32t exp, int32t mant)
     return f;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API void      msplitf(float f, int32t &sign, int32t &exp, int32t &mant)
+M_API void msplitf(float f, int32t &sign, int32t &exp, int32t &mant)
 {
     int32t i = *(int32t*)&f;
 
@@ -68,7 +68,7 @@ M_API void      msplitf(float f, int32t &sign, int32t &exp, int32t &mant)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Making Double Number
-M_API double    mmaked(int64t sign, int64t exp, int64t mant)
+M_API double mmaked(int64t sign, int64t exp, int64t mant)
 {
     int64t i = (sign << 63) | ((exp & 2047) << 52) | (mant & ((int64t(1) << 52) - 1));
     double d = *(double*)&i;
@@ -77,7 +77,7 @@ M_API double    mmaked(int64t sign, int64t exp, int64t mant)
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 // Splitting Double Number
-M_API void      msplitd(double d, int64t &sign, int64t &exp, int64t &mant)
+M_API void msplitd(double d, int64t &sign, int64t &exp, int64t &mant)
 {
     int64t i = *(int64t*)&d;
 
@@ -89,7 +89,7 @@ M_API void      msplitd(double d, int64t &sign, int64t &exp, int64t &mant)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Checking If Value Is Not A Number
-M_API int32t    misnan(float f)
+M_API int32t misnan(float f)
 {
     int32t s,e,m;
     msplitf(f,s,e,m);
@@ -97,7 +97,7 @@ M_API int32t    misnan(float f)
     return (e == 255) && (m != 0);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int64t    misnan(double d)
+M_API int64t misnan(double d)
 {
     int64t s,e,m;
     msplitd(d,s,e,m);
@@ -107,7 +107,7 @@ M_API int64t    misnan(double d)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Check If Value Is Signaling NaN
-M_API int32t  msnan(float f)
+M_API int32t msnan(float f)
 {
     int32t s,e,m;
     msplitf(f,s,e,m);
@@ -115,7 +115,7 @@ M_API int32t  msnan(float f)
     return (e == 255) && (m != 0) && (m >> 22);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int64t  msnan(double d)
+M_API int64t msnan(double d)
 {
     int64t s,e,m;
     msplitd(d,s,e,m);
@@ -125,7 +125,7 @@ M_API int64t  msnan(double d)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Check If Value Is Quiet NaN
-M_API int32t  mqnan(float f)
+M_API int32t mqnan(float f)
 {
     int32t s,e,m;
     msplitf(f,s,e,m);
@@ -133,7 +133,7 @@ M_API int32t  mqnan(float f)
     return (e == 255) && (m != 0) && !(m >> 22);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int64t  mqnan(double d)
+M_API int64t mqnan(double d)
 {
     int64t s,e,m;
     msplitd(d,s,e,m);
@@ -143,7 +143,7 @@ M_API int64t  mqnan(double d)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Check If Value Is Infinity
-M_API int32t  misinf(float f)
+M_API int32t misinf(float f)
 {
     int32t s,e,m;
     msplitf(f,s,e,m);
@@ -151,7 +151,7 @@ M_API int32t  misinf(float f)
     return (e == 255) && (m == 0);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int64t  misinf(double d)
+M_API int64t misinf(double d)
 {
     int64t s,e,m;
     msplitd(d,s,e,m);
@@ -162,7 +162,7 @@ M_API int64t  misinf(double d)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Check If Value Is Positive Infinity
-M_API int32t  mpinf(float f)
+M_API int32t mpinf(float f)
 {
     int32t s,e,m;
     msplitf(f,s,e,m);
@@ -170,7 +170,7 @@ M_API int32t  mpinf(float f)
     return (s == 0) && (e == 255) && (m == 0);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int64t  mpinf(double d)
+M_API int64t mpinf(double d)
 {
     int64t s,e,m;
     msplitd(d,s,e,m);
@@ -180,7 +180,7 @@ M_API int64t  mpinf(double d)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Check If Value Is Negative Infinity
-M_API int32t  mninf(float f)
+M_API int32t mninf(float f)
 {
     int32t s,e,m;
     msplitf(f,s,e,m);
@@ -188,33 +188,12 @@ M_API int32t  mninf(float f)
     return (s > 0) && (e == 255) && (m == 0);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int64t  mninf(double d)
+M_API int64t mninf(double d)
 {
     int64t s,e,m;
     msplitd(d,s,e,m);
 
     return (s > 0) && (e == 2047) && (m == 0);
-}
-
-///////////////////////////////////////////////////////////////////////////////////////
-// Clamp Value To [0, inf)
-///////////////////////////////////////////////////////////////////////////////////////
-M_API float  mclampnneg(float f)
-{
-    int32t i = *(int32t*)&f;
-    i = i >> 31;
-    i = ~i;
-    
-    return *(float*)& (*(int32t*)&f &= i );
-}
-///////////////////////////////////////////////////////////////////////////////////////
-M_API double mclampnneg(double d)
-{
-    int64t i = *(int64t*)&d;
-    i = i >> 63;
-    i = ~i;
-
-    return *(double*)&(*(int64t*)&d &= i );
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -243,7 +222,7 @@ M_API bool mlcmp(float af, float bf, int32t maxDiff)
 ///////////////////////////////////////////////////////////////////////////////////////
 // Clamping Value
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API float   mclamp(const float &min, const float &max, const float &f)
+M_API float mclamp(const float &min, const float &max, const float &f)
 {
     float fval = f;
     fval -= min;
@@ -257,7 +236,7 @@ M_API float   mclamp(const float &min, const float &max, const float &f)
     return fval;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API double   mclamp(const double &min, const double &max, const double &d)
+M_API double mclamp(const double &min, const double &max, const double &d)
 {
     double dval = d;
     dval -= min;
@@ -275,7 +254,7 @@ M_API double   mclamp(const double &min, const double &max, const double &d)
 ///////////////////////////////////////////////////////////////////////////////////////
 // Higher Power Of 2
 ///////////////////////////////////////////////////////////////////////////////////////
-M_API int8t  mhpow2(int8t n)
+M_API int8t mhpow2(int8t n)
 {
     n = n - 1;
     n = n | n>>1;
@@ -480,7 +459,7 @@ M_API uint64t mlpow2(uint64t n)
 
 ///////////////////////////////////////////////////////////////////////////////////////
 #ifdef MATH_PRIM_SSE
-void   mpack01(float out[], const float in[], int32t size)
+void mpack01(float out[], const float in[], int32t size)
 {
     if(size <= 0)
         return ;
@@ -508,7 +487,7 @@ void   mpack01(float out[], const float in[], int32t size)
     }
 }
 #else
-void   mpack01(float out[], const float in[], int32t size)
+void  mpack01(float out[], const float in[], int32t size)
 {
     if(size <= 0)
         return ;
@@ -517,7 +496,6 @@ void   mpack01(float out[], const float in[], int32t size)
     {
         out[i] = mpack01(in[i]);
     }
-
 }
 #endif
 
@@ -673,13 +651,13 @@ void munpack01_3(float out[], const float in[])
 // Normalizing Angle To [-PI,PI]
 ///////////////////////////////////////////////////////////////////////////////////////
 template <typename TReal>
-TReal   mnorma(TReal rad)
+TReal mnorma(TReal rad)
 {
-    TReal alpha = rad + CMathConsts<TReal>::MATH_PI;
-    alpha = alpha * CMathConsts<TReal>::MATH_1_2PI;
+    TReal alpha = rad + CMathConst<TReal>::MATH_PI;
+    alpha = alpha * CMathConst<TReal>::MATH_1_2PI;
     alpha = mfrc(alpha);
 
-    return alpha*CMathConsts<TReal>::MATH_2PI - CMathConsts<TReal>::MATH_PI;
+    return alpha*CMathConst<TReal>::MATH_2PI - CMathConst<TReal>::MATH_PI;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 // instantiation

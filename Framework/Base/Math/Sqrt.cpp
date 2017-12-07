@@ -10,7 +10,7 @@
 
 #include "Base/Common/PlatformTypes.h"
 
-#include "MathConsts.h"
+#include "MathConst.h"
 #include "MathLibDefs.h"
 #include "MathPrim.h"
 

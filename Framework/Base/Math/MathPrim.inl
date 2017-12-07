@@ -110,13 +110,11 @@ M_INLINE int64t mlesseq0(double d)
 M_INLINE int32t mless0(float f)
 {
     return *(int32t*)&f < 0;
-    //return *(int32t*)&f > 0x80000000UL;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 M_INLINE int64t mless0(double d)
 {
     return *(int64t*)&d < 0;
-    //return *(int64t*)&d > 0x8000000000000000UL;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -200,7 +198,7 @@ M_INLINE bool mispow2(Ttype n)
 template <typename TReal>
 M_INLINE TReal mpack01(TReal x)
 {
-    const TReal ValHalf(0.5f);
+    static const TReal ValHalf(0.5f);
     return x*ValHalf + ValHalf;
 }
 
@@ -210,8 +208,8 @@ M_INLINE TReal mpack01(TReal x)
 template <typename TReal>
 M_INLINE TReal munpack01(TReal x)
 {
-    const TReal ValTwo(2);
-	const TReal ValOne(1);
+    static const TReal ValTwo(2);
+	static const TReal ValOne(1);
 	return x*ValTwo - ValOne;
 }
 

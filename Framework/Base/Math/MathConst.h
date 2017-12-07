@@ -37,7 +37,7 @@
 #ifdef _WIN32
 #define MATH_INT64_MAX  0x7fffffffffffffff
 #define MATH_INT64_MIN  0x8000000000000000
-#else
+#else //__GNUC__
 #define MATH_INT64_MAX  0x7fffffffffffffffLL
 #define MATH_INT64_MIN  0x8000000000000000LL
 #endif
@@ -54,7 +54,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <typename T>
-class CMathConsts 
+class CMathConst
 {
 public:
     static constexpr T MATH_PI         = T(CONST_PI);          // - pi
