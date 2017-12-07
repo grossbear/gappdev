@@ -16,6 +16,8 @@
 #include "MathConst.h"
 #include "MathLibDefs.h"
 
+#include "tfixed32.h"
+
 #include "MathPrim.h"
 #include "Sqrt.h"
 //#include "Trigonometry.h"
