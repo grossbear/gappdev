@@ -43,18 +43,31 @@ public:
     tfixed32<bits>& operator *= (const tfixed32<bits>& fx_val);
     tfixed32<bits>& operator /= (const tfixed32<bits>& fx_val);
     
+    tfixed32<bits>& operator >>= (int32t i);
+    tfixed32<bits>& operator <<= (int32t i);
+    
     
     // Unary Operators
-    tfixed32<bits>& operator + ();
-    tfixed32<bits>& operator - ();
+    tfixed32<bits>& operator + () const;
+    tfixed32<bits>& operator - () const; 
     
     // Binary Operators
-    tfixed32<bits> operator + (const tfixed32<bits> &fx_val);
-    tfixed32<bits> operator - (const tfixed32<bits> &fx_val);
-    tfixed32<bits> operator * (const tfixed32<bits> &fx_val);
-    tfixed32<bits> operator / (const tfixed32<bits> &fx_val);
-
+    tfixed32<bits> operator + (const tfixed32<bits> &fx_val) const;
+    tfixed32<bits> operator - (const tfixed32<bits> &fx_val) const;
+    tfixed32<bits> operator * (const tfixed32<bits> &fx_val) const;
+    tfixed32<bits> operator / (const tfixed32<bits> &fx_val) const;
     
+    tfixed32<bits> operator >> (int32t i) const;
+    tfixed32<bits> operator << (int32t i) const;
+    
+    bool operator == (const tfixed32<bits> &fx_val) const;
+    bool operator != (const tfixed32<bits> &fx_val) const;
+    
+    bool operator <  (const tfixed32<bits> &fx_val) const;
+    bool operator >  (const tfixed32<bits> &fx_val) const;
+    
+    bool operator <= (const tfixed32<bits> &fx_val) const;
+    bool operator >= (const tfixed32<bits> &fx_val) const;
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -154,11 +167,26 @@ tfixed32<bits>& tfixed32<bits>::operator /= (const tfixed32<bits>& fx_val)
     value = (int32t)(((int64t)value << bits) / (int64t)fx_val.value);
     return *this;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+tfixed32<bits>& tfixed32<bits>::operator >>= (int32t i)
+{
+    value >>= i;
+    return *this;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+tfixed32<bits>& tfixed32<bits>::operator <<= (int32t i)
+{
+    value <<= i;
+    return *this;
+}
     
 ///////////////////////////////////////////////////////////////////////////////////////    
 // Unary Operators
 template <int32t bits>
-tfixed32<bits>& tfixed32<bits>::operator + ()
+tfixed32<bits>& tfixed32<bits>::operator + () const
 {
     tfixed32<bits> out;
     out.value = value;
@@ -166,7 +194,7 @@ tfixed32<bits>& tfixed32<bits>::operator + ()
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int32t bits>
-tfixed32<bits>& tfixed32<bits>::operator - ()
+tfixed32<bits>& tfixed32<bits>::operator - () const
 {
     tfixed32<bits> out;
 	out.value = -value;
@@ -176,7 +204,7 @@ tfixed32<bits>& tfixed32<bits>::operator - ()
 ///////////////////////////////////////////////////////////////////////////////////////    
 // Binary Operators
 template <int32t bits>
-tfixed32<bits> tfixed32<bits>::operator + (const tfixed32<bits> &fx_val)
+tfixed32<bits> tfixed32<bits>::operator + (const tfixed32<bits> &fx_val) const
 {
     tfixed32<bits> out;
     out.value = value + fx_val.value;
@@ -184,7 +212,7 @@ tfixed32<bits> tfixed32<bits>::operator + (const tfixed32<bits> &fx_val)
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int32t bits>
-tfixed32<bits> tfixed32<bits>::operator - (const tfixed32<bits> &fx_val)
+tfixed32<bits> tfixed32<bits>::operator - (const tfixed32<bits> &fx_val) const
 {
     tfixed32<bits> out;
     out.value = value - fx_val.value;
@@ -192,7 +220,7 @@ tfixed32<bits> tfixed32<bits>::operator - (const tfixed32<bits> &fx_val)
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int32t bits>
-tfixed32<bits> tfixed32<bits>::operator * (const tfixed32<bits> &fx_val)
+tfixed32<bits> tfixed32<bits>::operator * (const tfixed32<bits> &fx_val) const
 {
     tfixed32<bits> out;
     out.value = (int32t)(((int64t)value * (int64t)fx_val.value + half) >> bits);
@@ -200,11 +228,67 @@ tfixed32<bits> tfixed32<bits>::operator * (const tfixed32<bits> &fx_val)
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int32t bits>
-tfixed32<bits> tfixed32<bits>::operator / (const tfixed32<bits> &fx_val)
+tfixed32<bits> tfixed32<bits>::operator / (const tfixed32<bits> &fx_val) const
 {
     tfixed32<bits> out;
     out.value = (int32t)(((int64t)value << bits) / (int64t)fx_val.value);
     return out;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+tfixed32<bits> tfixed32<bits>::operator >> (int32t i) const
+{
+    tfixed32<bits> out;
+    out.value = value >> i;
+    return out;
+}
+///////////////////////////////////////////////////////////////////////////////////////    
+template <int32t bits>
+tfixed32<bits> tfixed32<bits>::operator << (int32t i) const
+{
+    tfixed32<bits> out;
+    out.value = value << i;
+    return out;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+bool tfixed32<bits>::operator == (const tfixed32<bits> &fx_val) const
+{
+    return value == fx_val.value;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>   
+bool tfixed32<bits>::operator != (const tfixed32<bits> &fx_val) const
+{
+    return value != fx_val.value;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+bool tfixed32<bits>::operator <  (const tfixed32<bits> &fx_val) const
+{
+    return value < fx_val.value;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+bool tfixed32<bits>::operator >  (const tfixed32<bits> &fx_val) const
+{
+    return value > fx_val.value;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+bool tfixed32<bits>::operator <= (const tfixed32<bits> &fx_val) const
+{
+    return value <= fx_val.value;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int32t bits>
+bool tfixed32<bits>::operator >= (const tfixed32<bits> &fx_val) const
+{
+    return value >= fx_val.value;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 
