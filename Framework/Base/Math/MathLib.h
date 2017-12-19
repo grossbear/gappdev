@@ -22,9 +22,7 @@
 
 #include "MathPrim.h"
 #include "Sqrt.h"
-//#include "Trigonometry.h"
-
-//#include "half.h"
+#include "Trigonometry.h"
 
 //#include "Vector.h"
 //#include "Plane.h"
