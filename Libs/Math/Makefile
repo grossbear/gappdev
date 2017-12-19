@@ -7,7 +7,7 @@ OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 
-_OBJ = MathPrim.o Sqrt.o
+_OBJ = Half.o MathPrim.o Sqrt.o
 
 all: MakeDir $(_OBJ) mathlib.a 
 
@@ -16,6 +16,10 @@ MakeDir:
 	
 mathlib.a: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 	$(ARCH) rcs $@ $^
+	
+Half.o: $(MATHPATH)/thalf.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/thalf.cpp
+	mv thalf.o $(OBJDIR)/Half.o
 	
 MathPrim.o: $(MATHPATH)/MathPrim.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MathPrim.cpp

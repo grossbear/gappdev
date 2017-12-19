@@ -17,6 +17,8 @@
 #include "MathLibDefs.h"
 
 #include "tfixed32.h"
+#include "tfixed64.h"
+#include "thalf.h"
 
 #include "MathPrim.h"
 #include "Sqrt.h"

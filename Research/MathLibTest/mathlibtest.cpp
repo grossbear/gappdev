@@ -5,9 +5,14 @@ int main()
 {
     printf("MathLib test programm\n");
 
-    tfixed32<16> fx1(5.f);
-    tfixed32<16> fx1_sqrt = m_fxsqrt(fx1);
-    printf("fx1 sqrt = %.5f\n",(float)fx1_sqrt);
+    float fpi = CMathConst<float>::MATH_PI;
+    printf("float pi = %.6f\n",fpi);
+    
+    uint16t hpival = mftoh(fpi);
+    printf("half pi = %u\n",hpival);
+    
+    float fpi_from_h = mhtof(hpival);
+    printf("float pi from half = %.6f\n",fpi_from_h);
     
     return 0;
 }
