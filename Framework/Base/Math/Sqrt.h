@@ -24,7 +24,10 @@ uint32t m_isqrt(uint32t x);
 uint64t m_isqrt(uint64t x);
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int bits>
-tfixed32<bits> m_fxsqrt(tfixed32<bits> x);
+tfixed32<bits> m_ifxsqrt(tfixed32<bits> x);
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed32<bits> m_xsqrt(tfixed32<bits> x);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 M_FORCEINL float msqrt(float x)
@@ -44,8 +47,42 @@ M_FORCEINL double msqrt(double x)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
+/*
+TFix32<16> CMath::sqrt(TFix32<16> val)
+{
+    TFix32<16> root(0);
+    TFix32<16> temp, squaretemp;
+    TFix32<16> bits(128);
+
+    if(val < TFix32<16>(1))
+    {    
+        bits = TFix32<16>(1);
+        bits >>= 1;
+    }
+
+    while(bits.Raw())
+    {
+        temp = root | bits;
+
+        if((squaretemp = temp*temp) <= val)
+        {
+            root = temp;
+
+            if (squaretemp == val)
+			{
+				return root;
+			}
+        }
+
+        bits >>= 1;
+    }
+
+    return root;
+}
+*/
+
 template <int bits>
-tfixed32<bits> m_fxsqrt(tfixed32<bits> val)
+tfixed32<bits> m_ifxsqrt(tfixed32<bits> val)
 {
     tfixed32<bits> root(int32t(0));
     tfixed32<bits> temp, squaretemp;
@@ -78,5 +115,26 @@ tfixed32<bits> m_fxsqrt(tfixed32<bits> val)
     
     return root;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed32<bits> m_xsqrt(tfixed32<bits> x)
+{
+    uint32t offbits = (uint32t)(bits >> 1);
+    uint32t sqrmult = (0x1)<<offbits;
+     
+    uint32t uval = (uint32t)*(int32t*)x;
+    
+    uint32t uvalsqrt = m_isqrt(uval);
+    uvalsqrt *= sqrmult;
+    
+    tfixed32<bits> sqrtxval;
+    int32t *ptrsqrtval = (int32t*)sqrtxval;
+    *ptrsqrtval = (int32t)uvalsqrt;
+    
+    return sqrtxval;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
 
 #endif //_SQRT_H_

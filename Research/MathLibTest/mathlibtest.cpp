@@ -4,15 +4,22 @@
 int main()
 {
     printf("MathLib test programm\n");
+    
+    const int bits = 16;
 
-    float fpi = CMathConst<float>::MATH_PI;
-    printf("float pi = %.6f\n",fpi);
+    tfixed32<bits> fx1(5);
     
-    uint16t hpival = mftoh(fpi);
-    printf("half pi = %u\n",hpival);
+    /*uint32t sqrbits = (uint32t)(bits >> 1);
+    sqrbits = (0x1) << sqrbits;
+    printf("sqrbits = %u\n",sqrbits);*/
     
-    float fpi_from_h = mhtof(hpival);
-    printf("float pi from half = %.6f\n",fpi_from_h);
+    tfixed32<16> fx1_sqrt = m_xsqrt(fx1);
+    float fval1 = (float)fx1_sqrt;
+
+    printf("fval1 = %.6f\n",fval1);
+    
+    /*int32t fx1_sqrt = m_xsqrt(fx1);
+    printf("fx1 sqrt = %d\n",fx1_sqrt);*/
     
     return 0;
 }
