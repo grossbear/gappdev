@@ -119,8 +119,6 @@ void CMVec2Rotate(CMVector2D<T> &vOut, const CMVector2D<T> &vIn, T rad);
 template <class T>
 T CMVec2Length(const CMVector2D<T> &v);
 
-//template float CMVec2Length<float>(const CMVector2D<float> *pV);
-
 ///////////////////////////////////////////////////////////////////////////////////////
 // Returns The Square Of The Length Of A 2D Vector
 template <class T>
@@ -621,16 +619,10 @@ void CMVec4Sqrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T
 template <class T>
 void CMVec4Cosrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T> &v2, T factor);
 
-//#include "Vector.inl"
-//#include "VectorSpec.h"
-
 #endif //_CMVECTOR4D_
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-
-
 #include "Vector.inl"
-#include "VectorSpec.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////

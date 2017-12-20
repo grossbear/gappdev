@@ -12,6 +12,7 @@
 
 #include "MathConst.h"
 #include "MathLibDefs.h"
+#include "tfixed32.h"
 
 #include "MathPrim.h"
 

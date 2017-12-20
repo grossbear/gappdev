@@ -5,21 +5,12 @@ int main()
 {
     printf("MathLib test programm\n");
     
-    const int bits = 16;
-
-    tfixed32<bits> fx1(5);
+    CMVector2D<float> vec1(2.f,3.f);
+    CMVector2D<float> vec2(4.5f,7.f);
+    CMVector2D<float> vec3 = vec1 + vec2;
     
-    /*uint32t sqrbits = (uint32t)(bits >> 1);
-    sqrbits = (0x1) << sqrbits;
-    printf("sqrbits = %u\n",sqrbits);*/
-    
-    tfixed32<16> fx1_sqrt = m_xsqrt(fx1);
-    float fval1 = (float)fx1_sqrt;
-
-    printf("fval1 = %.6f\n",fval1);
-    
-    /*int32t fx1_sqrt = m_xsqrt(fx1);
-    printf("fx1 sqrt = %d\n",fx1_sqrt);*/
+    CMVector2D<float> vec4;
+    CMVec2Rotate(vec4,vec1,CMathConst<float>::MATH_PI);
     
     return 0;
 }

@@ -660,7 +660,7 @@ TReal mnorma(TReal rad)
     return alpha*CMathConst<TReal>::MATH_2PI - CMathConst<TReal>::MATH_PI;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-// instantiation
+// Instantiation Of Function mnorma
 template float mnorma<float>(float rad);
 ///////////////////////////////////////////////////////////////////////////////////////
 template double mnorma<double>(double rad);

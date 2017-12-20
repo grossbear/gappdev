@@ -2,7 +2,7 @@
 
 CXX=g++
 ARCH=ar
-CFLAGS=-std=gnu++11 -Wno-narrowing
+CFLAGS=-std=gnu++11
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
@@ -30,12 +30,12 @@ Sqrt.o: $(MATHPATH)/Sqrt.cpp $(MATHPATH)/MathPrim.cpp
 	mv Sqrt.o $(OBJDIR)/Sqrt.o
 
 Trigonometry.o: $(MATHPATH)/Trigonometry.cpp
-	$(CXX) $(FLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Trigonometry.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Trigonometry.cpp
 	mv Trigonometry.o $(OBJDIR)/Trigonometry.o
 	
-Vector.o: $(MATHPATH)/Vector.cpp $(MATHPATH)/VectorSpec.cpp $(MATHPATH)/Sqrt.cpp $(MATHPATH)/Trigonometry.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Vector.cpp $(MATHPATH)/VectorSpec.cpp
-	
+Vector.o: $(MATHPATH)/VectorSpec.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/VectorSpec.cpp
+	mv VectorSpec.o $(OBJDIR)/Vector.o
 
 .PHONY: clean
 

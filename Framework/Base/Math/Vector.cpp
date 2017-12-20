@@ -6,24 +6,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 
 
-#include <math.h>
-#include <memory.h>
-
-#include "Base/Common/PlatformTypes.h"
-#include "MathConst.h"
-#include "MathLibDefs.h"
-
-#include "MathPrim.h"
-#include "Sqrt.h"
-#include "Trigonometry.h"
-
-#include "PrimFunc.h"
-
-#include "Vector.h"
-
-#include "Algebra.h"
-
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 // Rotate 2D Vector 
 template <class T>
 void CMVec2Rotate(CMVector2D<T> &vOut, const CMVector2D<T> &vIn, T rad)
@@ -44,7 +27,7 @@ void CMVec2Rotate(CMVector2D<T> &vOut, const CMVector2D<T> &vIn, T rad)
 }
 
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 // Returns The Length Of A 2D Vector
 template <class T>
 T CMVec2Length(const CMVector2D<T> &v)
@@ -52,7 +35,7 @@ T CMVec2Length(const CMVector2D<T> &v)
     return MVEC2SQRT(v.x, v.y);
 }
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 // Returns The Square Of The Length Of A 2D Vector 
 template <class T>
 T CMVec2LengthSq(const CMVector2D<T> &v)
@@ -60,7 +43,7 @@ T CMVec2LengthSq(const CMVector2D<T> &v)
 	return v.x * v.x + v.y * v.y;
 }
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 // Normalizing 2D Vector
 template <class T>
 void CMVec2Normalize(CMVector2D<T> &vOut, const CMVector2D<T> &vIn)
@@ -168,7 +151,7 @@ void CMVec2Sqrp(CMVector2D<T> &vOut, const CMVector2D<T> &v1, const CMVector2D<T
 template <class T>
 void CMVec2Cosrp(CMVector2D<T> &vOut, const CMVector2D<T> &v1, const CMVector2D<T> &v2, T factor)
 {
-    T ft = mmultpi(factor);
+    T ft = factor * CMathConst<T>::MATH_PI;
     T f = (T(1) - MVEC2COS(ft))*T(0.5);
     
     T x = v1.x + ((v2.x - v1.x)*ft);
@@ -272,9 +255,8 @@ void CMVec2Hermite(CMVector2D<T> &vOut, const CMVector2D<T> &v1,
 
     vOut = v2*a1 + m1*a2 + m2*a3 + v3*a4;
 }
-
-
 ///////////////////////////////////////////////////////////////////////////////////////
+
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Vector3D Methods
@@ -550,7 +532,7 @@ void CMVec3Sqrp(CMVector3D<T> &vOut, const CMVector3D<T> &v1, const CMVector3D<T
 template <class T>
 void CMVec3Cosrp(CMVector3D<T> &vOut, const CMVector3D<T> &v1, const CMVector3D<T> &v2, T factor)
 {   
-    T ft = mmultpi(factor);
+    T ft = factor * CMathConst<T>::MATH_PI;
     T f = (T(1) - MVEC3COS(ft))*T(0.5);
     
     T x = v1.x + ((v2.x - v1.x)*ft);
@@ -563,7 +545,7 @@ void CMVec3Cosrp(CMVector3D<T> &vOut, const CMVector3D<T> &v1, const CMVector3D<
 }
 
 
-////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
 // 4D Vector
 
 // DO POPRAKI - Cross Product in 4 dimentions 
@@ -771,7 +753,7 @@ void CMVec4CatmullRom(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVect
 ///////////////////////////////////////////////////////////////////////////////////////
 // Returns A Point In Barycentric Coordinates, Using The Specified 4D Vectors
 template <class T>
-void CMVec3BaryCentric(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T> &v2,
+void CMVec4BaryCentric(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T> &v2,
                        const CMVector4D<T> &v3, T f, T g)
 {
     vOut.x = (T(1)-f-g) * (v1.x) + f * (v2.x) + g * (v3.x);
@@ -858,7 +840,7 @@ void CMVec4Sqrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T
 template <class T>
 void CMVec4Cosrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T> &v2, T factor)
 {   
-    T ft = mmultpi(factor);
+    T ft = factor * CMathConst<T>::MATH_PI;
     T f = (T(1) - MVEC4COS(ft))*T(0.5);
     
     T x = v1.x + ((v2.x - v1.x)*ft);
@@ -871,6 +853,4 @@ void CMVec4Cosrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<
     vOut.z = z;
     vOut.w = w;
 }
-
-
 ///////////////////////////////////////////////////////////////////////////////////////
