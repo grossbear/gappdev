@@ -5,12 +5,20 @@ int main()
 {
     printf("MathLib test programm\n");
     
-    CMVector2D<float> vec1(2.f,3.f);
-    CMVector2D<float> vec2(4.5f,7.f);
-    CMVector2D<float> vec3 = vec1 + vec2;
+    CMVector3D<float> pt1(0.0f, 2.0f, 0.0f);
+    CMVector3D<float> pt2(0.0f, 0.0f, 0.0f);
+    CMVector3D<float> pt3(2.0f, 0.0f, 0.0f);
     
-    CMVector2D<float> vec4;
-    CMVec2Rotate(vec4,vec1,CMathConst<float>::MATH_PI);
+    CMPlane<float> plane(pt1,pt2,pt3);
+    
+    printf("plane coeff: a = %.5f, b = %.5f, c= %.5f, d = %.5f\n",plane.a,plane.b,plane.c,plane.d);
+    
+    CMVector3D<float> interpr;
+    cvec3f pt(1.0f, 1.0f, 1.0f);
+    cvec3f dir(0.0f, 0.0f, -1.0f);
+    bool result = CMPlaneLineIntersect(interpr, plane, pt, dir);
+    
+    printf("intersection point: x = %.5f, y = %.5f, z = %.5f\n",interpr.x, interpr.y, interpr.z);
     
     return 0;
 }

@@ -25,8 +25,7 @@
 #include "Trigonometry.h"
 
 #include "Vector.h"
-
-//#include "Plane.h"
+#include "Plane.h"
 //#include "Matrix.h"
 //#include "Quaternion.h"
 

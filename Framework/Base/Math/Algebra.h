@@ -34,7 +34,7 @@ typedef CMVector2D<float> CMVector2Df;
 #define mvec2cubic  CMVec2Cubic
 #define mvec2catm   CMVec2CatmullRom 
 #define mvec2herm   CMVec2Hermite
-/*
+
 //-------------------------------------------------------------------------------------
 typedef CMVector3D<float> cvec3f;
 typedef CMVector3D<float> CMVector3Df;
@@ -90,7 +90,7 @@ typedef CMVector4D<float> CMVector4Df;
 #define mvec4cubic  CMVec4Cubic
 #define mvec4catm   CMVec4CatmullRom 
 #define mvec4herm   CMVec4Hermite
-*/
+
 
 //-------------------------------------------------------------------------------------
 #endif //__ALGEBRA_H__

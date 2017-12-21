@@ -444,7 +444,7 @@ M_FORCEINL double MMTX44ATAN2(double y, double x)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-// Matrix4x4
+// Quaternion
 M_FORCEINL void MQUATSINCOS(float angle, float &sina, float &cosa)
 {
 #ifdef CMATH_QUAT_TABLE_TRIGONOMETRY
@@ -560,13 +560,13 @@ M_FORCEINL float MQUATSQRT(float x)
 #elif CMATH_QUAT_TABLE_SQRT
     return m_tsqrt(x);
 #else
-    return sqrtf(x);
+    return msqrt(x);
 #endif
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 M_FORCEINL double MQUATSQRT(double x)
 {
-    return sqrt(x);
+    return msqrt(x);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -577,13 +577,13 @@ M_FORCEINL float MQUATRSQRT(float x, float y, float z, float w)
 #elif CMATH_QUAT_TABLE_SQRT
     return 1.0f/m_tsqrt(x*x + y*y + z*z + w*w);
 #else
-    return 1.0f/sqrtf(x*x + y*y + z*z + w*w);
+    return 1.0f/msqrt(x*x + y*y + z*z + w*w);
 #endif
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 M_FORCEINL double MQUATRSQRT(double x, double y, double z, double w)
 {
-    return 1.0/sqrt(x*x + y*y + z*z + w*w);
+    return 1.0/msqrt(x*x + y*y + z*z + w*w);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 
