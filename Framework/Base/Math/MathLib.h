@@ -25,6 +25,7 @@
 #include "Vector.h"
 #include "Plane.h"
 #include "Matrix.h"
-//#include "Quaternion.h"
+#include "Quaternion.h"
+#include "QuatCompression.h"
 
 #include "Algebra.h"
