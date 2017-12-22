@@ -14,55 +14,51 @@
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsLineIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
+bool CMIsLineIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
                               const CMVector3D<T> &vertex3, const CMVector3D<T> &point, const CMVector3D<T> &dir);
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMLineTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
+bool CMLineTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
                               const CMVector3D<T> &vertex3, const CMVector3D<T> &point, const CMVector3D<T> &dir);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                              const CMVector3D<T> &vertex3, const CMVector3D<T> &orig, const CMVector3D<T> &dir, 
-                             boolt twoSided = false);
+                             bool twoSided = false);
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsRayIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMIsRayIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                              const CMVector3D<T> &vertex3, const CMVector3D<T> &orig, const CMVector3D<T> &dir, 
-                             boolt twoSided = false);
+                             bool twoSided = false);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMSegmentTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMSegmentTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                                  const CMVector3D<T> &vertex3, const CMVector3D<T> &segPoint1, 
                                  const CMVector3D<T> &segPoint2);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                                  const CMVector3D<T> &vertex3, const CMVector3D<T> &segPoint1, 
                                  const CMVector3D<T> &segPoint2);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsPointInsideTriangle(const CMVector3D<T> &point, const CMVector3D<T> &vertex1,
+bool CMIsPointInsideTriangle(const CMVector3D<T> &point, const CMVector3D<T> &vertex1,
                               const CMVector3D<T> &vertex2, const CMVector3D<T> &vertex3);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
 void CMTriangleNormal(CMVector3D<T> &norm, const CMVector3D<T> &p1, const CMVector3D<T> &p2,
-                      const CMVector3D<T> &p3, boolt bNormalize = true);
+                      const CMVector3D<T> &p3, bool bNormalize = true);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
 void CMClosestPointOnLine(CMVector3D<T> &vOut, const CMVector3D<T> &A, const CMVector3D<T> &B,
-                             const CMVector3D<T> &point, boolt SegmentClamp = true);
+                             const CMVector3D<T> &point, bool SegmentClamp = true);
 ///////////////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////////////
-
-#include "3DMathSpec.h"
 
 
 #endif //_3DMATH_H_

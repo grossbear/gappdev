@@ -7,7 +7,7 @@ OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 
-_OBJ = Half.o MathPrim.o Sqrt.o Trigonometry.o Vector.o Plane.o Matrix.o Quaternion.o
+_OBJ = Half.o MathPrim.o Sqrt.o Trigonometry.o Vector.o Plane.o Matrix.o Quaternion.o 3DMath.o
 
 all: MakeDir $(_OBJ) mathlib.a 
 
@@ -49,6 +49,9 @@ Quaternion.o: $(MATHPATH)/QuatSpec.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/QuatSpec.cpp
 	mv QuatSpec.o $(OBJDIR)/Quaternion.o
 	
+3DMath.o: $(MATHPATH)/3DMathSpec.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/3DMathSpec.cpp
+	mv 3DMathSpec.o $(OBJDIR)/3DMath.o
 
 .PHONY: clean
 

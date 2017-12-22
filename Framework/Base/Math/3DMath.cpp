@@ -7,30 +7,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 
 
-#include "PlatformTypes.h"
-
-#include <math.h>
-#include <memory.h>
-
-#include "MathConst.h"
-#include "MathDefs.h"
-
-
-#include "MathPrim.h"
-#include "Trigonometry.h"
-
-#include "MathLibDefs.h"
-
-#include "Vector.h"
-#include "Matrix.h"
-#include "Quaternion.h"
-#include "Plane.h"
-
-#include "Algebra.h"
-
-#include "3DMath.h"
-
-
 ///////////////////////////////////////////////////////////////////////////////////////
 // Line Triangle Intersection Functions
 
@@ -38,7 +14,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 // Calculates Points Of Intersection Of Line And The Triangle
 template <class T>
-boolt CMLineIntersectTriangle(CMVector3D<T> *pOut, CMVector3D<T> *p0, CMVector3D<T> *p1, CMVector3D<T> *p2,
+bool CMLineIntersectTriangle(CMVector3D<T> *pOut, CMVector3D<T> *p0, CMVector3D<T> *p1, CMVector3D<T> *p2,
                               CMVector3D<T> *point, CMVector3D<T> *dir)
 {
     //ASSERT(pOut != NULL);
@@ -97,9 +73,9 @@ boolt CMLineIntersectTriangle(CMVector3D<T> *pOut, CMVector3D<T> *p0, CMVector3D
 /*
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMRayIntersectTriangle(CMVector3D<T> *pOut, const CMVector3D<T> *p0, const CMVector3D<T> *p1,
+bool CMRayIntersectTriangle(CMVector3D<T> *pOut, const CMVector3D<T> *p0, const CMVector3D<T> *p1,
                              const CMVector3D<T> *p2, const CMVector3D<T> *pOrigin, const CMVector3D<T> *pDir, 
-                             boolt twoSided)
+                             bool twoSided)
 {
     ASSERT(p0 != NULL);
     ASSERT(p1 != NULL);
@@ -182,7 +158,7 @@ boolt CMRayIntersectTriangle(CMVector3D<T> *pOut, const CMVector3D<T> *p0, const
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsPointInsideTriangle(const CMVector3D<T> &point, const CMVector3D<T> &vertex1,
+bool CMIsPointInsideTriangle(const CMVector3D<T> &point, const CMVector3D<T> &vertex1,
                               const CMVector3D<T> &vertex2, const CMVector3D<T> &vertex3)
 {
     const CMVector3D<T> vtx[3] = {vertex1,vertex2,vertex3};
@@ -217,7 +193,7 @@ boolt CMIsPointInsideTriangle(const CMVector3D<T> &point, const CMVector3D<T> &v
 ///////////////////////////////////////////////////////////////////////////////////////
 /* // nie jest funkcja wydajna
 template <class T>
-boolt CMIsPointInsideTriangle(const CMVector3D<T> *pPoint, const CMVector3D<T> *pVertex1,
+bool CMIsPointInsideTriangle(const CMVector3D<T> *pPoint, const CMVector3D<T> *pVertex1,
                               const CMVector3D<T> *pVertex2, const CMVector3D<T> *pVertex3)
 {
     ASSERT(pPoint != NULL);
@@ -299,14 +275,14 @@ bool PointInTriangle(Vector P, Vector D, Vector* V)
 ///////////////////////////////////////////////////////////////////////////////////////
 // Calculates Points Of Intersection Of Line And The Triangle
 template <class T>
-boolt CMLineTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
+bool CMLineTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
                               const CMVector3D<T> &vertex3, const CMVector3D<T> &point, const CMVector3D<T> &dir)
 {
     CMPlane<T> plane;
     CMPlaneSet(plane,vertex1,vertex2,vertex3);
 
     CMVector3D<T> intersectionPoint; 
-    boolt intersect = CMPlaneLineIntersect(intersectionPoint,plane,point,dir);
+    bool intersect = CMPlaneLineIntersect(intersectionPoint,plane,point,dir);
 
     if (intersect)
     {
@@ -329,14 +305,14 @@ boolt CMLineTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex
 ///////////////////////////////////////////////////////////////////////////////////////
 // Calculate If Line Intersect Triangle
 template <class T>
-boolt CMIsLineIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
+bool CMIsLineIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2, 
                               const CMVector3D<T> &vertex3, const CMVector3D<T> &point, const CMVector3D<T> &dir)
 {
     CMPlane<T> plane;
     CMPlaneSet(plane,vertex1,vertex2,vertex3);
 
     CMVector3D<T> intersectionPoint; 
-    boolt intersect = CMPlaneLineIntersect(intersectionPoint,plane,point,dir);
+    bool intersect = CMPlaneLineIntersect(intersectionPoint,plane,point,dir);
 
     if (intersect)
     {
@@ -352,9 +328,9 @@ boolt CMIsLineIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                              const CMVector3D<T> &vertex3, const CMVector3D<T> &origin, const CMVector3D<T> &dir, 
-                             boolt twoSided)
+                             bool twoSided)
 {
     CMPlane<T> plane; 
     CMPlaneSet(plane,vertex1,vertex2,vertex3);
@@ -362,7 +338,7 @@ boolt CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1
     CMVector3D<T> tVec;
     CMVector3D<T> intersectionPoint; 
 
-    boolt intersect = CMIsRayIntersectPlane(plane,origin,dir,twoSided);
+    bool intersect = CMIsRayIntersectPlane(plane,origin,dir,twoSided);
 
     if (intersect)
     {
@@ -382,16 +358,16 @@ boolt CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsRayIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMIsRayIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                              const CMVector3D<T> &vertex3, const CMVector3D<T> &orig, const CMVector3D<T> &dir, 
-                             boolt twoSided)
+                             bool twoSided)
 {
     CMPlane<T> plane; 
     CMPlaneSet(plane,vertex1,vertex2,vertex3);
 
     CMVector3D<T> intersectionPoint; 
 
-    boolt intersect = CMIsRayIntersectPlane(plane,orig,dir,twoSided);
+    bool intersect = CMIsRayIntersectPlane(plane,orig,dir,twoSided);
 
     if (intersect)
     {
@@ -408,7 +384,7 @@ boolt CMIsRayIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T>
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMSegmentIntersectTriangle(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMSegmentIntersectTriangle(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                                  const CMVector3D<T> &vertex3, const CMVector3D<T> &segPoint1, 
                                  const CMVector3D<T> &segPoint2)
 {
@@ -418,7 +394,7 @@ boolt CMSegmentIntersectTriangle(CMVector3D<T> &vOut, const CMVector3D<T> &verte
     CMVector3D<T> tVec;
     CMVector3D<T> intersectionPoint;// = &tVec;
 
-    boolt intersect = CMPlaneSegmentIntersect(vOut,plane,segPoint1,segPoint2); 
+    bool intersect = CMPlaneSegmentIntersect(vOut,plane,segPoint1,segPoint2); 
 
     if (intersect)
     {
@@ -438,7 +414,7 @@ boolt CMSegmentIntersectTriangle(CMVector3D<T> &vOut, const CMVector3D<T> &verte
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
-boolt CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
+bool CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> &vertex2,
                                  const CMVector3D<T> &vertex3, const CMVector3D<T> &segPoint1, 
                                  const CMVector3D<T> &segPoint2)
 {
@@ -448,7 +424,7 @@ boolt CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3
     CMVector3D<T> tVec;
     CMVector3D<T> intersectionPoint;
 
-    boolt intersect = CMPlaneSegmentIntersect(tVec,plane,segPoint1,segPoint2); 
+    bool intersect = CMPlaneSegmentIntersect(tVec,plane,segPoint1,segPoint2); 
 
     if (intersect)
     {
@@ -465,7 +441,7 @@ boolt CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
 void CMTriangleNormal(CMVector3D<T> &vNorm, const CMVector3D<T> &p0, const CMVector3D<T> &p1,
-                      const CMVector3D<T> &p2, boolt bNormalize)
+                      const CMVector3D<T> &p2, bool bNormalize)
 {
     CMVector3D<T> dir1, dir2;
 
@@ -481,7 +457,7 @@ void CMTriangleNormal(CMVector3D<T> &vNorm, const CMVector3D<T> &p0, const CMVec
 ///////////////////////////////////////////////////////////////////////////////////////
 template <class T>
 void CMClosestPointOnLine(CMVector3D<T> &vOut, const CMVector3D<T> &A, const CMVector3D<T> &B,
-                             const CMVector3D<T> &point, boolt SegmentClamp)
+                             const CMVector3D<T> &point, bool SegmentClamp)
 {
     CMVector3D<T> AP = point - A;
     CMVector3D<T> AB = B - A;
