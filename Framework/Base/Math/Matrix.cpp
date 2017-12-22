@@ -4,27 +4,7 @@
 //  Matrix Classes Templates Methods Definitions
 //
 ///////////////////////////////////////////////////////////////////////////////////////
-#include "PlatformTypes.h"
 
-#include <math.h>
-#include <memory.h>
-
-#include "MathConst.h"
-#include "MathDefs.h"
-
-#include "MathLibDefs.h"
-
-#include "MathPrim.h"
-#include "Sqrt.h"
-#include "Trigonometry.h"
-
-#include "PrimFunc.h"
-
-#include "Vector.h"
-#include "Plane.h"
-#include "Matrix.h"
-
-#include "Algebra.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // 3x3 Matrix Non-Inline Functions
@@ -193,43 +173,37 @@ void CMMtx33ScaleInv2D(CMMatrix33<T> &M, T x, T y)
 ///////////////////////////////////////////////////////////////////////////////////////
 // Create Translation Matrix In 2D Space
 template <class T>
-void CMMtx33Translate2D(CMMatrix33<T> *pM, T x, T y)
+void CMMtx33Translate2D(CMMatrix33<T> &mtx, T x, T y)
 {
-    ASSERT(pM != NULL);
+    memset(&mtx._11,0,sizeof(T)*9);
 
-    memset(&pM->_11,0,sizeof(T)*9);
-
-    pM->_11 = pM->_22 = pM->_33 = T(1);
-    pM->_31 = x;
-    pM->_32 = y;
+    mtx._11 = mtx._22 = mtx._33 = T(1);
+    mtx._31 = x;
+    mtx._32 = y;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Create Scale Matrix
 template <class T>
-void CMMtx33Scale(CMMatrix33<T> *pM, T x, T y, T z)
+void CMMtx33Scale(CMMatrix33<T> &mtx, T x, T y, T z)
 {
-    ASSERT(pM != NULL);
+    memset(&mtx._11,0,sizeof(T)*9);
 
-    memset(&pM->_11,0,sizeof(T)*9);
-
-    pM->_11 = x;
-    pM->_22 = y;
-    pM->_33 = z;
+    mtx._11 = x;
+    mtx._22 = y;
+    mtx._33 = z;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Create Inverse Scale Values Matrix
 template <class T>
-void CMMtx33ScaleInv(CMMatrix33<T> *pM, T x, T y, T z)
+void CMMtx33ScaleInv(CMMatrix33<T> &mtx, T x, T y, T z)
 {
-    ASSERT(pM != NULL);
+    memset(&mtx._11,0,sizeof(T)*9);
 
-    memset(&pM->_11,0,sizeof(T)*9);
-
-    pM->_11 = T(1)/x;
-    pM->_22 = T(1)/y;
-    pM->_33 = T(1)/z;
+    mtx._11 = T(1)/x;
+    mtx._22 = T(1)/y;
+    mtx._33 = T(1)/z;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -816,7 +790,7 @@ void CMVec3Mult3(CMVector3D<T> &Out, const CMVector3D<T> &vec, const CMMatrix44<
 // Builds A Transformation Matrix. NULL Arguments Are Treated As Default Transformations.
 template <class T>
 void CMMtx44Transformation(CMMatrix44<T> &M, const CMVector3D<T> &vTranslation, const CMVector3D<T> &vRotation,
-                     const CMVector3D<T> &vScale, bool israd)
+                     const CMVector3D<T> &vScale)
 {
     CMVector3D<T> translation;
     CMVector3D<T> rotation;
@@ -830,13 +804,6 @@ void CMMtx44Transformation(CMMatrix44<T> &M, const CMVector3D<T> &vTranslation, 
 
     //if(Scale != NULL)
     scale = vScale;
-
-    if(!israd)
-    {
-        rotation.x = mtorad(rotation.x);
-        rotation.y = mtorad(rotation.y);
-        rotation.z = mtorad(rotation.z);
-    }
 
     T sinval[3],cosval[3];
     for(int32t i = 0; i < 3; i++)
@@ -1264,7 +1231,7 @@ void CMMtx34Translate(CMMatrix34<T> &M, T x, T y, T z)
 template <class T>
 void CMMtx34Scale(CMMatrix34<T> &M, T x, T y, T z)
 {
-    CMMtx33Scale(&M.M, x,y,z);
+    CMMtx33Scale(M.M, x,y,z);
     memset(&M.V,0,sizeof(T)*3);
 }
 

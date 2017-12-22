@@ -7,7 +7,7 @@ OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 
-_OBJ = Half.o MathPrim.o Sqrt.o Trigonometry.o Vector.o Plane.o
+_OBJ = Half.o MathPrim.o Sqrt.o Trigonometry.o Vector.o Plane.o Matrix.o
 
 all: MakeDir $(_OBJ) mathlib.a 
 
@@ -40,6 +40,10 @@ Vector.o: $(MATHPATH)/VectorSpec.cpp
 Plane.o: $(MATHPATH)/PlaneSpec.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/PlaneSpec.cpp
 	mv PlaneSpec.o $(OBJDIR)/Plane.o
+	
+Matrix.o: $(MATHPATH)/MtxSpec.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MtxSpec.cpp
+	mv MtxSpec.o $(OBJDIR)/Matrix.o
 	
 
 .PHONY: clean

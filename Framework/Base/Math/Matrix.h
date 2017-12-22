@@ -113,7 +113,7 @@ void CMMtx22Rotate(CMMatrix22<T> &M, T rad);
 ///////////////////////////////////////////////////////////////////////////////////////
 // Transform 2D Vector By 2x2 Matrix
 template <class T>
-void CMVec2Transform(CMVector2D<T> &Out, const CMVector2D<T> &v, const CMMatrix22<T> &M);
+void CMVec2Transform(CMVector2D<T> &Out, const CMVector2D<T> &V, const CMMatrix22<T> &M);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -470,7 +470,7 @@ void CMVec3Mult3(CMVector3D<T> &Out, const CMVector3D<T> &v, const CMMatrix44<T>
 // Builds A Transformation Matrix. NULL Arguments Are Treated As Default Transformations.
 template <class T>
 void CMMtx44Transformation(CMMatrix44<T> &M, const CMVector3D<T> &vTranslation, const CMVector3D<T> &vRotation,
-                     const CMVector3D<T> &vScale, bool israd = true);
+                     const CMVector3D<T> &vScale);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Decomposing Transformation 4x4 Matrix

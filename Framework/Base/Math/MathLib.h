@@ -6,8 +6,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
-//#include "Common/PlatformTypes.h"//Must Be Included In All Files
-
 #include <math.h>
 #include <memory.h>
 
@@ -26,7 +24,7 @@
 
 #include "Vector.h"
 #include "Plane.h"
-//#include "Matrix.h"
+#include "Matrix.h"
 //#include "Quaternion.h"
 
 #include "Algebra.h"

@@ -243,21 +243,21 @@ M_INLINE bool CMMatrix33<T>::operator != ( const CMMatrix33<T> & mtx ) const
 ///////////////////////////////////////////////////////////////////////////////////////
 // Set Identity Matrix
 template <class T>
-void CMMtx33Identity(CMMatrix33<T> &M)
+void CMMtx33Identity(CMMatrix33<T> &mtx)
 {
-    memset(&pM->_11,0,sizeof(T)*9);
+    memset(&mtx._11,0,sizeof(T)*9);
 
-    pM._11 = pM.22 = pM.33 = T(1);
+    mtx._11 = mtx._22 = mtx._33 = T(1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Is Identity
 template <class T>
-bool CMMtx33IsIdentity(const CMMatrix33<T> &M)
+bool CMMtx33IsIdentity(const CMMatrix33<T> &mtx)
 {
-    return  pM->m[0][0] == T(1) && pM->m[0][1] == T(0) && pM->m[0][2] == T(0) &&
-            pM->m[1][0] == T(0) && pM->m[1][1] == T(1) && pM->m[1][2] == T(0) &&
-            pM->m[2][0] == T(0) && pM->m[2][1] == T(0) && pM->m[2][2] == T(1);
+    return  mtx.m[0][0] == T(1) && mtx.m[0][1] == T(0) && mtx.m[0][2] == T(0) &&
+            mtx.m[1][0] == T(0) && mtx.m[1][1] == T(1) && mtx.m[1][2] == T(0) &&
+            mtx.m[2][0] == T(0) && mtx.m[2][1] == T(0) && mtx.m[2][2] == T(1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -550,13 +550,13 @@ M_INLINE CMMatrix44<T> CMMatrix44<T>::operator / (const T & val) const
 template <class T>
 M_INLINE bool CMMatrix44<T>::operator == (const CMMatrix44<T> &mtx) const
 {
-    return 0 == memcmp(this, &mtx, sizeof(T)*16);
+    return memcmp(this, &mtx, sizeof(T)*16) == 0;
 }
 ////////////////////////////////////////////////////////////////////////////
 template <class T>
 M_INLINE bool CMMatrix44<T>::operator != (const CMMatrix44<T> &mtx) const
 {
-    return 0 != memcmp(this, &mtx, sizeof(T)*16);
+    return memcmp(this, &mtx, sizeof(T)*16) != 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -606,7 +606,7 @@ M_INLINE void CMMtx44Set(int row, CMMatrix44<T> &M, const CMVector4D<T> &vec)
     M[row][0] = vec.x;
     M[row][1] = vec.y;
     M[row][2] = vec.z;
-    M[row][3] = vec.w
+    M[row][3] = vec.w;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
