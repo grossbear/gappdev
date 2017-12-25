@@ -38,7 +38,6 @@ M_FORCEINL int32t mtoint(float f)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-#ifdef MATH_DOUBLE_INST
 M_FORCEINL double mtoreal(int64t i)
 {
 #ifdef MATH_NO_FPU
@@ -57,7 +56,6 @@ M_FORCEINL int64t mtoint(double d)
 #endif // MATH_NO_FPU
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-#endif // MATH_DOUBLE_INST
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Absolute Value Functions
@@ -249,8 +247,8 @@ M_INLINE bool mispow2(Ttype n)
 template <typename TReal>
 M_INLINE TReal mpack01(TReal x)
 {
-    static const TReal ValHalf(0.5f);
-    return x*ValHalf + ValHalf;
+    static const TReal half(0.5f);
+    return x*half + half;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -259,9 +257,9 @@ M_INLINE TReal mpack01(TReal x)
 template <typename TReal>
 M_INLINE TReal munpack01(TReal x)
 {
-    static const TReal ValTwo(2);
-	static const TReal ValOne(1);
-	return x*ValTwo - ValOne;
+    static const TReal two(2);
+	static const TReal one(1);
+	return x*two - one;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

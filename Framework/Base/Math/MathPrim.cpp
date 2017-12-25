@@ -24,7 +24,7 @@
 // Bias Constant Used For Fast Conversions Between Int And Float. First Element
 // In INTORFLOAT Union Is Integer -- We Are Storing Biased Exponent 23, Mantissa .1, Which
 // Is Equivalent To 1.5 x 2^23. 
-const INTFLOAT  bias = {((23 + 127) << 23) + (1 << 22)};
+const INTFLOAT  biasflt = {((23 + 127) << 23) + (1 << 22)};
 // 2^23 = 8388608
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -35,8 +35,8 @@ M_API int32t mftoi(float f)
     ASSERT(f >= -4194304.0f && f <= 4194304.0f);
 
     INTFLOAT fi;    
-    fi.f = f + bias.f;
-    return fi.i - bias.i;
+    fi.f = f + biasflt.f;
+    return fi.i - biasflt.i;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 M_API float mitof(int32t i)
@@ -44,8 +44,8 @@ M_API float mitof(int32t i)
     ASSERT(i >= -4194304 && i <= 4194304);
 
     INTFLOAT fi;    
-    fi.i = i + bias.i;
-    return fi.f - bias.f;
+    fi.i = i + biasflt.i;
+    return fi.f - biasflt.f;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 

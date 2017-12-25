@@ -33,9 +33,9 @@ Trigonometry.o: $(MATHPATH)/Trigonometry.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Trigonometry.cpp
 	mv Trigonometry.o $(OBJDIR)/Trigonometry.o
 	
-Vector.o: $(MATHPATH)/VectorSpec.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/VectorSpec.cpp
-	mv VectorSpec.o $(OBJDIR)/Vector.o
+Vector.o: $(MATHPATH)/VectorInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/VectorInst.cpp
+	mv VectorInst.o $(OBJDIR)/Vector.o
 	
 Plane.o: $(MATHPATH)/PlaneSpec.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/PlaneSpec.cpp

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//  VectorSpec.cpp
+//  VectorInst.cpp
 //
-//  Vector Classes Methods Specialization
+//  Vector Classes Instantiation
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -97,6 +97,48 @@ template void CMVec2Sqrp(CMVector2D<float> &vOut, const CMVector2D<float> &v1, c
 template void CMVec2Cosrp(CMVector2D<float> &vOut, const CMVector2D<float> &v1, const CMVector2D<float> &v2, float factor);
 ///////////////////////////////////////////////////////////////////////////////////////
 
+// CMVector2D Double Type Instantiation
+#ifdef MATH_DOUBLE_INST
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Rotate<double>(CMVector2D<double> &vOut, const CMVector2D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec2Length<double>(const CMVector2D<double> &v);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec2LengthSq<double>(const CMVector2D<double> &v);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec2Distance(const CMVector2D<double> &p0, const CMVector2D<double> &p1);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec2DistanceSq(const CMVector2D<double> &p0, const CMVector2D<double> &p1);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Normalize(CMVector2D<double> &vOut, const CMVector2D<double> &vIn);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec2Angle(const CMVector2D<double> &v1, const CMVector2D<double> &vV2);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Reflect(CMVector2D<double> &vR, const CMVector2D<double> &vL, const CMVector2D<double> &vN);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Refract(CMVector2D<double> &vR, const CMVector2D<double> &vL, const CMVector2D<double> &vN,
+                            double etaRatio);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2CatmullRom(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &v2, 
+                      const CMVector2D<double> &v3, const CMVector2D<double> &v4,  double weightingFactor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2BaryCentric(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &v2,
+                       const CMVector2D<double> &v3, double f, double g);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Hermite(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &vT1, 
+                   const CMVector2D<double> &v2, const CMVector2D<double> &vT2, double weight, double tension, double bias);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Quadratic(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &v2,
+                     const CMVector2D<double> &v3, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Cubic(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &v2,
+                 const CMVector2D<double> &v3, const CMVector2D<double> &v4, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Sqrp(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &v2, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec2Cosrp(CMVector2D<double> &vOut, const CMVector2D<double> &v1, const CMVector2D<double> &v2, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+#endif //MATH_DOUBLE_INST
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // CMVector3D Functions
@@ -108,7 +150,6 @@ template void CMVec3RotateX(CMVector3D<float> &vOut, const CMVector3D<float> &vI
 ///////////////////////////////////////////////////////////////////////////////////////
 // Rotate A 3D Vector In Y Axis, Using The Specified Angle In Radians
 template void CMVec3RotateY(CMVector3D<float> &vOut, const CMVector3D<float> &vIn, float rad);
-
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Rotate A 3D Vector In Z Axis, Using The Specified Angle In Radians
@@ -179,6 +220,56 @@ template void CMVec3Sqrp(CMVector3D<float> &vOut, const CMVector3D<float> &v1, c
 ///////////////////////////////////////////////////////////////////////////////////////
 // Performs A Cosinus Interpolation, Using Two 3D Vectors
 template void CMVec3Cosrp(CMVector3D<float> &vOut, const CMVector3D<float> &v1, const CMVector3D<float> &vV2, float factor);
+
+
+// CMVector3D Double Type Instantiation
+#ifdef MATH_DOUBLE_INST
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3RotateX(CMVector3D<double> &vOut, const CMVector3D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3RotateY(CMVector3D<double> &vOut, const CMVector3D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3RotateZ(CMVector3D<double> &vOut, const CMVector3D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec3Length(const CMVector3D<double> &v);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec3LengthSq(const CMVector3D<double> &v);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec3Distance(const CMVector3D<double> &p0, const CMVector3D<double> &p1);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec3DistanceSq(const CMVector3D<double> &p0, const CMVector3D<double> &p1);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Normalize(CMVector3D<double> &vOut, const CMVector3D<double> &vIn);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec3Angle(const CMVector3D<double> &v1, const CMVector3D<double> &v2);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Reflect(CMVector3D<double> &vR, const CMVector3D<double> &vL, const CMVector3D<double> &vN);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Refract(CMVector3D<double> &vR, const CMVector3D<double> &vL, const CMVector3D<double> &vN,
+                            double etaRatio);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3CatmullRom(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &v2, 
+                      const CMVector3D<double> &v3, const CMVector3D<double> &v4,  double weight);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3BaryCentric(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &v2,
+                       const CMVector3D<double> &v3, double f, double g);
+
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Hermite(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &vT1, 
+                   const CMVector3D<double> &v2, const CMVector3D<double> &vT2, double weight, double tension, double bias);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Quadratic(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &v2,
+                     const CMVector3D<double> &v3, double factor);
+
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Cubic(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &v2,
+                 const CMVector3D<double> &v3, const CMVector3D<double> &v4, double factor);
+
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Sqrp(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &v2, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec3Cosrp(CMVector3D<double> &vOut, const CMVector3D<double> &v1, const CMVector3D<double> &vV2, double factor);
+#endif //MATH_DOUBLE_INST
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -266,6 +357,54 @@ template void CMVec4Sqrp(CMVector4D<float> &vOut, const CMVector4D<float> &v1, c
 // Performs A Cosinus Interpolation, Using Two 4D Vectors
 template void CMVec4Cosrp(CMVector4D<float> &vOut, const CMVector4D<float> &v1, const CMVector4D<float> &v2, float factor);
 
+
+// CMVector4D Double Type Instantiation
+#ifdef MATH_DOUBLE_INST
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Cross(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4RotateX(CMVector4D<double> &vOut, const CMVector4D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4RotateY(CMVector4D<double> &vOut, const CMVector4D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4RotateZ(CMVector4D<double> &vOut, const CMVector4D<double> &vIn, double rad);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec4Length(const CMVector4D<double> &v);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec4LengthSq(const CMVector4D<double> &v);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec4Distance(CMVector4D<double> &p0, CMVector4D<double> &p1);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec4DistanceSq(CMVector4D<double> &p0, CMVector4D<double> &p1);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Normalize(CMVector4D<double> &vOut, const CMVector4D<double> &vIn);
+///////////////////////////////////////////////////////////////////////////////////////
+template double CMVec4Angle(const CMVector4D<double> &v1, const CMVector4D<double> &v2);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Reflect(CMVector4D<double> &vR, const CMVector4D<double> &vL, const CMVector4D<double> &vN);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Refract(CMVector4D<double> &vR, const CMVector4D<double> &vL, const CMVector4D<double> &vN,
+                            double etaRatio);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4CatmullRom(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2, 
+                      const CMVector4D<double> &v3, const CMVector4D<double> &v4,  double f);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4BaryCentric(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2,
+                       const CMVector4D<double> &v3, double f, double g);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Hermite(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &vT1, 
+                   const CMVector4D<double> &v2, const CMVector4D<double> &vT2, double weight, double tension, double bias);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Quadratic(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2,
+                     const CMVector4D<double> &v3, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Cubic(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2,
+                 const CMVector4D<double> &v3, const CMVector4D<double> &v4, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Sqrp(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2, double factor);
+///////////////////////////////////////////////////////////////////////////////////////
+template void CMVec4Cosrp(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2, double factor);
+#endif //MATH_DOUBLE_INST
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template class CMVector2D<float>;
