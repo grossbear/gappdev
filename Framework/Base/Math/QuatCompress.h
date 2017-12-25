@@ -1,12 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//  QuatSpec.h
+//  QuatCompress.h
 //
-//  Quaternion Class Template Specialization Declarations
+//  Quaternion Compression And Decompression Methods
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _QUATSPEC_H_
-#define _QUATSPEC_H_
+#ifndef _QUATCOMPRESS_H_
+#define _QUATCOMPRESS_H_
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -40,4 +40,4 @@ void CMQuatPolarAngleDecoding(CMQuaternion<float> &Q, int32t ciquat);
 // Quaternion Polar Coding Decompression Decoding Two Angles
 void CMQuatPolarAngleDecoding(CMQuaternion<float> &Q, int32t ciquat);
 
-#endif  //_QUATSPEC_H_
+#endif  //_QUATCOMPRESS_H_

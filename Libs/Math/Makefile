@@ -2,7 +2,7 @@
 
 CXX=g++
 ARCH=ar
-CFLAGS=-std=gnu++11 -Wshift-count-overflow
+CFLAGS=-std=gnu++11
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
@@ -37,21 +37,21 @@ Vector.o: $(MATHPATH)/VectorInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/VectorInst.cpp
 	mv VectorInst.o $(OBJDIR)/Vector.o
 	
-Plane.o: $(MATHPATH)/PlaneSpec.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/PlaneSpec.cpp
-	mv PlaneSpec.o $(OBJDIR)/Plane.o
+Plane.o: $(MATHPATH)/PlaneInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/PlaneInst.cpp
+	mv PlaneInst.o $(OBJDIR)/Plane.o
 	
-Matrix.o: $(MATHPATH)/MtxSpec.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MtxSpec.cpp
-	mv MtxSpec.o $(OBJDIR)/Matrix.o
+Matrix.o: $(MATHPATH)/MtxInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/MtxInst.cpp
+	mv MtxInst.o $(OBJDIR)/Matrix.o
 	
-Quaternion.o: $(MATHPATH)/QuatSpec.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/QuatSpec.cpp
-	mv QuatSpec.o $(OBJDIR)/Quaternion.o
+Quaternion.o: $(MATHPATH)/QuatInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/QuatInst.cpp
+	mv QuatInst.o $(OBJDIR)/Quaternion.o
 	
-3DMath.o: $(MATHPATH)/3DMathSpec.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/3DMathSpec.cpp
-	mv 3DMathSpec.o $(OBJDIR)/3DMath.o
+3DMath.o: $(MATHPATH)/3DMathInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/3DMathInst.cpp
+	mv 3DMathInst.o $(OBJDIR)/3DMath.o
 
 .PHONY: clean
 

@@ -13,6 +13,12 @@
 typedef CMVector2D<float> cvec2f;
 typedef CMVector2D<float> CMVector2Df;
 
+#ifdef MATH_DOUBLE_INST
+//-------------------------------------------------------------------------------------
+typedef CMVector2D<double> cvec2d;
+typedef CMVector2D<double> CMVector2Dd;
+#endif //MATH_DOUBLE_INST
+
 #define mvec2add    CMVec2Add
 #define mvec2sub    CMVec2Sub 
 #define mvec2dot    CMVec2Dot 
@@ -38,6 +44,12 @@ typedef CMVector2D<float> CMVector2Df;
 //-------------------------------------------------------------------------------------
 typedef CMVector3D<float> cvec3f;
 typedef CMVector3D<float> CMVector3Df;
+
+#ifdef MATH_DOUBLE_INST
+//-------------------------------------------------------------------------------------
+typedef CMVector3D<double> cvec3d;
+typedef CMVector3D<double> CMVector3Dd;
+#endif //MATH_DOUBLE_INST
 
 #define mvec3add    CMVec3Add
 #define mvec3sub    CMVec3Sub
@@ -66,6 +78,12 @@ typedef CMVector3D<float> CMVector3Df;
 //-------------------------------------------------------------------------------------
 typedef CMVector4D<float> cvec4f;
 typedef CMVector4D<float> CMVector4Df;
+
+#ifdef MATH_DOUBLE_INST
+//-------------------------------------------------------------------------------------
+typedef CMVector4D<double> cvec4d;
+typedef CMVector4D<double> CMVector4Dd;
+#endif //MATH_DOUBLE_INST
 
 #define mvec4add    CMVec4Add
 #define mvec4sub    CMVec4Sub

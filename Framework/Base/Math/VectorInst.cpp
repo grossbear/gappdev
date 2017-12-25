@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 //  VectorInst.cpp
 //
-//  Vector Classes Instantiation
+//  Vector Classes And Methods Instantiation
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -97,7 +97,7 @@ template void CMVec2Sqrp(CMVector2D<float> &vOut, const CMVector2D<float> &v1, c
 template void CMVec2Cosrp(CMVector2D<float> &vOut, const CMVector2D<float> &v1, const CMVector2D<float> &v2, float factor);
 ///////////////////////////////////////////////////////////////////////////////////////
 
-// CMVector2D Double Type Instantiation
+// CMVector2D Double Type Functions Instantiation
 #ifdef MATH_DOUBLE_INST
 ///////////////////////////////////////////////////////////////////////////////////////
 template void CMVec2Rotate<double>(CMVector2D<double> &vOut, const CMVector2D<double> &vIn, double rad);
@@ -222,7 +222,7 @@ template void CMVec3Sqrp(CMVector3D<float> &vOut, const CMVector3D<float> &v1, c
 template void CMVec3Cosrp(CMVector3D<float> &vOut, const CMVector3D<float> &v1, const CMVector3D<float> &vV2, float factor);
 
 
-// CMVector3D Double Type Instantiation
+// CMVector3D Double Type Functions Instantiation
 #ifdef MATH_DOUBLE_INST
 ///////////////////////////////////////////////////////////////////////////////////////
 template void CMVec3RotateX(CMVector3D<double> &vOut, const CMVector3D<double> &vIn, double rad);
@@ -358,7 +358,7 @@ template void CMVec4Sqrp(CMVector4D<float> &vOut, const CMVector4D<float> &v1, c
 template void CMVec4Cosrp(CMVector4D<float> &vOut, const CMVector4D<float> &v1, const CMVector4D<float> &v2, float factor);
 
 
-// CMVector4D Double Type Instantiation
+// CMVector4D Double Type Functions Instantiation
 #ifdef MATH_DOUBLE_INST
 ///////////////////////////////////////////////////////////////////////////////////////
 template void CMVec4Cross(CMVector4D<double> &vOut, const CMVector4D<double> &v1, const CMVector4D<double> &v2);
@@ -413,3 +413,14 @@ template class CMVector3D<float>;
 ///////////////////////////////////////////////////////////////////////////////////////
 template class CMVector4D<float>;
 ///////////////////////////////////////////////////////////////////////////////////////
+
+// Vectors Classes Instantiation
+#ifdef MATH_DOUBLE_INST
+///////////////////////////////////////////////////////////////////////////////////////
+template class CMVector2D<double>;
+///////////////////////////////////////////////////////////////////////////////////////
+template class CMVector3D<double>;
+///////////////////////////////////////////////////////////////////////////////////////
+template class CMVector4D<double>;
+///////////////////////////////////////////////////////////////////////////////////////
+#endif //MATH_DOUBLE_INST
