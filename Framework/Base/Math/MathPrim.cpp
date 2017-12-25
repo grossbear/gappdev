@@ -25,6 +25,7 @@
 // In INTORFLOAT Union Is Integer -- We Are Storing Biased Exponent 23, Mantissa .1, Which
 // Is Equivalent To 1.5 x 2^23. 
 const INTFLOAT  bias = {((23 + 127) << 23) + (1 << 22)};
+// 2^23 = 8388608
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Converting Functions From Integer To Float Type And Vice Versa
@@ -47,6 +48,37 @@ M_API float mitof(int32t i)
     return fi.f - bias.f;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef MATH_DOUBLE_INST
+// Bias Constant Used For Fast Conversions Between Int And Double. First Element
+// In INTORDOUBLE Union Is Integer -- We Are Storing Biased Exponent 52, Mantissa .1, Which
+// Is Equivalent To 1.5 x 2^52.
+const INTDOUBLE biasdbl = {(uint64t(52 + 1023) << 52) + (uint64t(1) << 51)};
+// 2^52 = 4503599627370496
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Converting Functions From Integer To Double Type And Vice Versa
+///////////////////////////////////////////////////////////////////////////////////////
+M_API int64t mdtoi(double d)
+{
+    ASSERT(d >= -2251799813685248.0 && d <= 2251799813685248.0);
+
+    INTDOUBLE di;    
+    di.d = d + biasdbl.d;
+    return di.i - biasdbl.i;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+M_API double mitod(int64t i)
+{
+    ASSERT(i >= -2251799813685248 && i <= 2251799813685248);
+
+    INTDOUBLE di;    
+    di.i = i + biasdbl.i;
+    return di.d - biasdbl.d;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+
+#endif //MATH_DOUBLE_INST
 
 ///////////////////////////////////////////////////////////////////////////////////////
 M_API float mmakef(int32t sign, int32t exp, int32t mant)

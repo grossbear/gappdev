@@ -2,7 +2,7 @@
 
 CXX=g++
 ARCH=ar
-CFLAGS=-std=gnu++11
+CFLAGS=-std=gnu++11 -Wshift-count-overflow
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math

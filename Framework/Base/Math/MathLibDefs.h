@@ -11,10 +11,21 @@
 
 #define M_API
 
+// In-line Function And Force In line Macros
 #define M_INLINE       __inline
 #define M_FORCEINL     __forceinline
 
+// Primary Function That Has SSE Implementation
 #define MATH_PRIM_SSE
+
+// Library Uses It's Own Conversion From Floating Point Number To Integer And Vice-Versa
+#define MATH_NO_FPU
+
+// Build Classes Instantiation Using Following Data Types  
+#define MATH_DOUBLE_INST
+#define MATH_LONG_DOUBLE_INST
+#define MATH_FIXED_INST
+#define MATH_HALF_INST
 
 //#define CMATH_VEC2_FAST_SQRT
 //#define CMATH_VEC2_TABLE_SQRT
