@@ -1,0 +1,7 @@
+#Stuff that need to be implemented
+
+#Base Framework Development
+#Math Library
+-half data type
+-pseudo random number generator
+-perlin noise
