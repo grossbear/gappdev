@@ -2,6 +2,8 @@
 
 #Base Framework Development
 #Math Library
+-bit operators in fixed data types
+-fixed trygonometry functions
 -half data type
 -pseudo random number generator
 -perlin noise

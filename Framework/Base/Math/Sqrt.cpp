@@ -69,6 +69,15 @@ float m_fsqrt(float number)
     int32t i;
 	float x2, y;
 	const float threehalfs = 1.5f;
+    
+    /*
+        float xhalf = 0.5f * f;
+        int i = *(int*)&f; 
+        i = 0x5f3759d5 - (i >> 1); 
+        f = *(float*)&i; 
+        f = f*(1.5f - xhalf*f*f); 
+        return f;
+    */
 
 	x2 = number * 0.5f;
 	y  = number;
