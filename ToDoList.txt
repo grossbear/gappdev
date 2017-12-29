@@ -3,7 +3,7 @@
 #Base Framework Development
 #Math Library
 +bit operators in fixed data types
-+fixed trygonometry functions
++fixed trigonometry functions
 -half data type
 -math const tfixed32 type
 -math const tfixed64 type
