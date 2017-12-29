@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 //  tfixed64.h
 //
-//  Math Fixed64 Type Class
+//  Math 64-bit Fixed Data Type Class
 //  
 //
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -32,9 +32,10 @@ public:
     operator const int64t* () const;
 
     // Cast To Primitive Build-in Types
-    operator float();
-    operator double();
-    operator int64t();
+    operator float() const;
+    operator double() const;
+    operator int64t() const;
+    operator bool() const;
     
     // Assignment Operators
     tfixed64<bits>& operator = (const tfixed64<bits>& fx_val);
@@ -46,10 +47,13 @@ public:
     tfixed64<bits>& operator >>= (int64t i);
     tfixed64<bits>& operator <<= (int64t i);
     
+    tfixed64<bits>& operator &= (int64t mask);
+    tfixed64<bits>& operator |= (int64t mask);
+    tfixed64<bits>& operator ^= (int64t mask);
     
     // Unary Operators
-    tfixed64<bits>& operator + () const;
-    tfixed64<bits>& operator - () const; 
+    tfixed64<bits> operator + () const;
+    tfixed64<bits> operator - () const; 
     
     // Binary Operators
     tfixed64<bits> operator + (const tfixed64<bits> &fx_val) const;
@@ -60,6 +64,10 @@ public:
     tfixed64<bits> operator >> (int64t i) const;
     tfixed64<bits> operator << (int64t i) const;
     
+    tfixed64<bits> operator & (int64t mask) const;
+    tfixed64<bits> operator | (int64t mask) const;
+    tfixed64<bits> operator ^ (int64t mask) const;
+    
     bool operator == (const tfixed64<bits> &fx_val) const;
     bool operator != (const tfixed64<bits> &fx_val) const;
     
@@ -68,6 +76,9 @@ public:
     
     bool operator <= (const tfixed64<bits> &fx_val) const;
     bool operator >= (const tfixed64<bits> &fx_val) const;
+    
+    bool operator && (const tfixed64<bits> &fx_val) const;
+    bool operator || (const tfixed64<bits> &fx_val) const;
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -112,21 +123,27 @@ tfixed64<bits>::operator const int64t* () const
 ///////////////////////////////////////////////////////////////////////////////////////
 //Cast To Primitive Build-in Types
 template <int bits>
-tfixed64<bits>::operator float()
-{//return (float)v / (float)one;
+tfixed64<bits>::operator float() const
+{
     return (float)value / (float)one;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int bits>
-tfixed64<bits>::operator double()
+tfixed64<bits>::operator double() const
 {
     return (double)value / (double)one;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int bits>
-tfixed64<bits>::operator int64t()
+tfixed64<bits>::operator int64t() const
 {
     return value >> bits;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed64<bits>::operator bool() const
+{
+    return value != 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -182,11 +199,33 @@ tfixed64<bits>& tfixed64<bits>::operator <<= (int64t i)
     value <<= i;
     return *this;
 }
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed64<bits>& tfixed64<bits>::operator &= (int64t mask)
+{
+    value &= mask;
+    return *this;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed64<bits>& tfixed64<bits>::operator |= (int64t mask)
+{
+    value |= mask;
+    return *this;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed64<bits>& tfixed64<bits>::operator ^= (int64t mask)
+{
+    value ^= mask;
+    return *this;
+}
     
 ///////////////////////////////////////////////////////////////////////////////////////    
 // Unary Operators
 template <int bits>
-tfixed64<bits>& tfixed64<bits>::operator + () const
+tfixed64<bits> tfixed64<bits>::operator + () const
 {
     tfixed64<bits> out;
     out.value = value;
@@ -194,7 +233,7 @@ tfixed64<bits>& tfixed64<bits>::operator + () const
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int bits>
-tfixed64<bits>& tfixed64<bits>::operator - () const
+tfixed64<bits> tfixed64<bits>::operator - () const
 {
     tfixed64<bits> out;
 	out.value = -value;
@@ -254,6 +293,31 @@ tfixed64<bits> tfixed64<bits>::operator << (int64t i) const
 
 ///////////////////////////////////////////////////////////////////////////////////////
 template <int bits>
+tfixed64<bits> tfixed64<bits>::operator & (int64t mask) const
+{
+    tfixed64<bits> out;
+    out.value = value & mask;
+    return out;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed64<bits> tfixed64<bits>::operator | (int64t mask) const
+{
+    tfixed64<bits> out;
+    out.value = value | mask;
+    return out;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+tfixed64<bits> tfixed64<bits>::operator ^ (int64t mask) const
+{
+    tfixed64<bits> out;
+    out.value = value ^ mask;
+    return out;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
 bool tfixed64<bits>::operator == (const tfixed64<bits> &fx_val) const
 {
     return value == fx_val.value;
@@ -290,6 +354,20 @@ bool tfixed64<bits>::operator >= (const tfixed64<bits> &fx_val) const
 {
     return value >= fx_val.value;
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+bool tfixed64<bits>::operator && (const tfixed64<bits> &fx_val) const
+{
+    return value && fx_val.value;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+template <int bits>
+bool tfixed64<bits>::operator || (const tfixed64<bits> &fx_val) const
+{
+    return value || fx_val.value;
+}
+///////////////////////////////////////////////////////////////////////////////////////
+
 
 #endif //__TFIXED64_H__

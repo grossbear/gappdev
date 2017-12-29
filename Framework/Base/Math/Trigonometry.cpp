@@ -106,112 +106,100 @@ void m_tsincosf(float angle, float &sin_val, float &cos_val)
 // Sinus Function Using Precalculated Table
 tfixed32<16> m_tsinx(const tfixed32<16> &x)
 {
-    /*
-    TFix32<16> fxval = (x.Raw() < 0) ? (CMath::fxPI - x) : (x);
-    fxval /= CMath::fxTWOPI;
-    fxval &= 0x0000FFFF;
-    TFix32<16> fx_ent;
-    fx_ent.Raw(FIXED_TABLE_SIZE-1);
-    fxval *= fx_ent;
-
-    int tabpos = fxval.Raw();
-    int tabval = fxsin_tab[tabpos];
-
-    fxval.Raw(tabval);
-    return fxval;
-    */
-    
     //CMathConst< tfixed32<16> >::MATH_2PI; - not compiling
     //ToDo: make it compile
     
-    /*static const tfixed32<16> fx2pi(CONST_2PI);
+    static const tfixed32<16> fx2pi(CONST_2PI);
+    
     tfixed32<16> fxval = (*(int32t*)x < 0) ? (fx2pi - x) : (x);
     fxval /= fx2pi;
     fxval &= 0x0000FFFF; //fraction part
     tfixed32<16> fxent;
-    *(int32t*)fxent = FIXED_TABLE_SIZE-1;
+    *(int32t*)fxent = FIXED_TABLE_SIZE - 1;
     fxval *= fxent;
     
     int32t tabidx = *(int32t*)fxval;
     int32t intval = fxsin_tab[tabidx];
     
-    tfixed32<16> out;
-    *(int32t*)out = intval;
+    tfixed32<16> outval;
+    *(int32t*)outval = intval;
     
-    return out;*/
-   
-   return tfixed32<16>(0);
+    return outval;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Cosinus Function Using Precalculated Table
 tfixed32<16> m_tcosx(const tfixed32<16> &x)
 {
-    /*
-    TFix32<16> fxval = (x.Raw() < 0) ? (-x) : (x);
-    fxval /= CMath::fxTWOPI;
+    static const tfixed32<16> fx2pi(CONST_2PI);
+    
+    tfixed32<16> fxval = (*(int32t*)x < 0) ? (-x) : (x);
+    fxval /= fx2pi;
     fxval &= 0x0000FFFF;
-    TFix32<16> fx_ent;
-    fx_ent.Raw(FIXED_TABLE_SIZE-1);
-    fxval *= fx_ent;
-
-    int tabpos = fxval.Raw();
-    int tabval = fxcos_tab[tabpos];
-
-    fxval.Raw(tabval);
-    return fxval;
-    */
-    return tfixed32<16>(0);
+    tfixed32<16> fxent;
+    *(int32t*)fxent = FIXED_TABLE_SIZE - 1;
+    fxval *= fxent;
+    
+    int32t tabidx = *(int32t*)fxval;
+    int32t intval = fxcos_tab[tabidx];
+    
+    tfixed32<16> outval;
+    *(int32t*)outval = intval;
+    
+    return outval;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Arcus Cosinus Function Using Precalculated Table
 tfixed32<16> m_tacosx(const tfixed32<16> &x)
-{
-    /*
-    TFix32<16> fxval = x + TFix32<16>(1);
+{    
+    static const tfixed32<16> one(1);
+    
+    tfixed32<16> fxval = x + one;
     fxval >>= 1;
     fxval &= 0x0000FFFF;
-    TFix32<16> fx_ent;
-    fx_ent.Raw(FIXED_TABLE_SIZE-1);
-    fxval *= fx_ent;
-
-    int tabpos = fxval.Raw(); 
-    int tabval = fxacos_tab[tabpos];
-    fxval.Raw(tabval);
-
-    return fxval;
-    */
+    tfixed32<16> fxent;
+    *(int32t*)fxent = FIXED_TABLE_SIZE - 1;
+    fxval *= fxent;
     
-    return tfixed32<16>(0);
+    int32t tabidx = *(int32t*)fxval;
+    int32t intval = fxacos_tab[tabidx];
+    
+    tfixed32<16> outval;
+    *(int32t*)outval = intval;
+    
+    return outval;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // SinCos Function Using Precalculated Table
 void m_tsincosx(const tfixed32<16> &angle, tfixed32<16> &sin_val, tfixed32<16> &cos_val)
-{
-    /*
-    sina = (angle.Raw() < 0) ? (CMath::fxPI - angle) : (angle);
-    sina /= CMath::fxTWOPI;
-    sina &= 0x0000FFFF;
-
-    cosa = (angle.Raw() < 0) ? (-angle) : (angle);
-    cosa /= CMath::fxTWOPI;
-    cosa &= 0x0000FFFF;
-
-    TFix32<16> fx_ent;
-    fx_ent.Raw(FIXED_TABLE_SIZE-1);
-
-    sina *= fx_ent;
-    int tabpos = sina.Raw();
-    int tabval = fxsin_tab[tabpos];
-    sina.Raw(tabval);
-
-    cosa *= fx_ent;
-    tabpos = cosa.Raw();
-    tabval = fxcos_tab[tabpos];
-    cosa.Raw(tabval);
-    */
+{    
+    static const tfixed32<16> fx2pi(CONST_2PI);
+    
+    sin_val = (*(int32t*)angle < 0) ? (fx2pi - angle) : (angle);
+    sin_val /= fx2pi;
+    sin_val &= 0x0000FFFF;
+    
+    cos_val = (*(int32t*)angle < 0) ? (-angle) : (angle);
+    cos_val /= fx2pi;
+    cos_val &= 0x0000FFFF;
+    
+    tfixed32<16> fxent;
+    *(int32t*)fxent = FIXED_TABLE_SIZE - 1;
+    
+    int32t tabidx = 0;
+    int32t intval = 0;
+    
+    sin_val *= fxent;
+    tabidx = *(int32t*)sin_val;
+    intval = fxsin_tab[tabidx];
+    *(int32t*)sin_val = intval;
+    
+    cos_val *= fxent;
+    tabidx = *(int32t*)cos_val;
+    intval = fxcos_tab[tabidx];
+    *(int32t*)cos_val = intval;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

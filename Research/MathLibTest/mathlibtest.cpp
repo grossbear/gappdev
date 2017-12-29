@@ -20,5 +20,9 @@ int main()
     
     printf("intersection point: x = %.5f, y = %.5f, z = %.5f\n",interpr.x, interpr.y, interpr.z);
     
+    float val = 5.0f;
+    float invsqval = m_rfsqrt(val);
+    printf("invert sqrt val = %.5f\n",invsqval);
+    
     return 0;
 }

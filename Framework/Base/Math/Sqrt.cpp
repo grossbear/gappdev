@@ -42,52 +42,32 @@ float m_tsqrt(float f)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-float m_rfsqrt(float number)
+float m_rfsqrt(float f)
 {
-    ASSERT(!mless0(number));
+    ASSERT(!mless0(f));
     
-    int32t i;
-	float x2, y;
-	const float threehalfs = 1.5f;
-
-	x2 = number * 0.5f;
-	y  = number;
-	i  = * ( int32t * ) &y;		            // evil floating point bit level hacking
-	i  = 0x5f3759df - ( i >> 1 );               // 
-	y  = * ( float * ) &i;
-	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-	return y;
+    float xhalf = 0.5f * f;
+    int32t i = *(int32t*)&f;    // evil floating point bit level hacking
+    i = 0x5f3759d5 - (i >> 1); 
+    f = *(float*)&i; 
+    f = f*(1.5f - xhalf*f*f);   // 1st iteration
+    //f = f*(1.5f - xhalf*f*f);   // 2nd iteration, this can be removed
+    
+    return f;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-float m_fsqrt(float number)
+float m_fsqrt(float f)
 {
-    ASSERT(!mless0(number));
+    ASSERT(!mless0(f));
     
-    int32t i;
-	float x2, y;
-	const float threehalfs = 1.5f;
+    float xhalf = 0.5f * f;
+    int32t i = *(int*)&f; 
+    i = 0x5f3759d5 - (i >> 1); 
+    f = *(float*)&i; 
+    f = f*(1.5f - xhalf*f*f);
     
-    /*
-        float xhalf = 0.5f * f;
-        int i = *(int*)&f; 
-        i = 0x5f3759d5 - (i >> 1); 
-        f = *(float*)&i; 
-        f = f*(1.5f - xhalf*f*f); 
-        return f;
-    */
-
-	x2 = number * 0.5f;
-	y  = number;
-	i  = * ( int32t * ) &y;		            // evil floating point bit level hacking
-	i  = 0x5f3759df - ( i >> 1 );               // 
-	y  = * ( float * ) &i;
-	y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-	return 1.0f/y;
+    return 1.0f/f;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

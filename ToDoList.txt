@@ -2,8 +2,14 @@
 
 #Base Framework Development
 #Math Library
--bit operators in fixed data types
--fixed trygonometry functions
++bit operators in fixed data types
++fixed trygonometry functions
 -half data type
+-math const tfixed32 type
+-math const tfixed64 type
+-math const thalf type
+-numeric limits tfixed32
+-numeric limits tfixed64
+-numeric limits thalf
 -pseudo random number generator
 -perlin noise
