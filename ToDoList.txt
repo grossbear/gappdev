@@ -4,7 +4,7 @@
 #Math Library
 +bit operators in fixed data types
 +fixed trigonometry functions
--half data type
+-half data type class
 -math const tfixed32 type
 -math const tfixed64 type
 -math const thalf type
@@ -13,3 +13,41 @@
 -numeric limits thalf
 -pseudo random number generator
 -perlin noise
+
+#Utils
+-BlockArray
+-BitArray
+-HighRes and LowRes Timer
+-File and buffers I/O streams
+
+#Tools
+-Font Source file generator (implement old source code)
+
+#Models
+-Model Data Container Class
+
+#Research
+#Font
+-Font loading and rendering class from source file (impelement old source code)
+#Noise
+-Pseudo random number generator class
+-Perlin noise gen class
+#WinGDI
+-WinGDI draw shapes and draw image class
+-hBitmap draw app
+#OpenCL
+-OpenCL managment class
+#Models
+-Primitive Shapes Generator Classes
+
+#GLRenderer
+-Implement old GLRenderer class
+-OpenGL rendering blank screen App
+-Printing example text OpenGL App
+-Loading and rendering MD2 model OpenGL App Sample
+
+#WinGDI
+-Image loading and drawing simple app
+
+--Long term project
+-Model Loading Classes System
