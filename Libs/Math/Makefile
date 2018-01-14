@@ -7,7 +7,8 @@ OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 
-_OBJ = Half.o MathPrim.o Sqrt.o Trigonometry.o Vector.o Plane.o Matrix.o Quaternion.o 3DMath.o
+_OBJ = Half.o MathPrim.o Sqrt.o Trigonometry.o PseudoRandom.o Perlin.o\
+Vector.o Plane.o Matrix.o Quaternion.o 3DMath.o
 
 all: MakeDir $(_OBJ) mathlib.a 
 
@@ -32,6 +33,14 @@ Sqrt.o: $(MATHPATH)/Sqrt.cpp $(MATHPATH)/MathPrim.cpp
 Trigonometry.o: $(MATHPATH)/Trigonometry.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Trigonometry.cpp
 	mv Trigonometry.o $(OBJDIR)/Trigonometry.o
+	
+PseudoRandom.o: $(MATHPATH)/PseudoRandom.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/PseudoRandom.cpp
+	mv PseudoRandom.o $(OBJDIR)/PseudoRandom.o
+	
+Perlin.o: $(MATHPATH)/Perlin.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/Perlin.cpp
+	mv Perlin.o $(OBJDIR)/Perlin.o
 	
 Vector.o: $(MATHPATH)/VectorInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c $(MATHPATH)/VectorInst.cpp

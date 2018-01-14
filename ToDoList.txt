@@ -36,7 +36,9 @@
 -WinGDI draw shapes and draw image class
 -hBitmap draw app
 #OpenCL
--OpenCL managment class
+-OpenCL device managment class
+#Vulkan
+-Vulkan device managment class
 #Models
 -Primitive Shapes Generator Classes
 
@@ -48,6 +50,7 @@
 
 #WinGDI
 -Image loading and drawing simple app
+-Implement old Image class and image loading classes
 
 --Long term project
 -Model Loading Classes System

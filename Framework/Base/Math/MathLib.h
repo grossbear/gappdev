@@ -22,6 +22,9 @@
 #include "Sqrt.h"
 #include "Trigonometry.h"
 
+#include "PseudoRandom.h"
+#include "Perlin.h"
+
 #include "Vector.h"
 #include "Plane.h"
 #include "Matrix.h"
