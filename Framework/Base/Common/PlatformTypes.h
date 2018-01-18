@@ -11,7 +11,12 @@
 
 //#define SIZE_INT_64
 
+#define __CPLUSPLUS_VER_98_     19971L
+#define __CPLUSPLUS_VER_11_     201103L 
+
+///////////////////////////////////////////////////////////////////////////////////////
 #ifdef _WIN32
+///////////////////////////////////////////////////////////////////////////////////////
 
 typedef char                tbyte;      // signed byte
 typedef unsigned char       ubyte;      // unsigned char
@@ -68,15 +73,45 @@ MSVC++ 6.0  _MSC_VER == 1200
 MSVC++ 5.0  _MSC_VER == 110
 */
 
+//compiler type
+#if defined(_MSC_VER)
+
 #if (_MSC_VER >= 1700)
-#define __CPLUSPLUS_VER_11
-#endif
+    #define __CPLUSPLUS_VER_    __CPLUSPLUS_VER_11_
+#else
+    #define __CPLUSPLUS_VER_    __CPLUSPLUS_VER_98_
+#endif //_MSC_VER version
+
+#elif defined(__GNUC__)
+
+#if (__cplusplus == __CPLUSPLUS_VER_11_)
+    #define __CPLUSPLUS_VER_    __CPLUSPLUS_VER_11_
+#else
+    #define __CPLUSPLUS_VER_    __CPLUSPLUS_VER_98_
+#endif //__cplusplus version
+
+
+#endif //compiler type
+
+/*
+__GNUC__
+__GNUC_MINOR__
+__GNUC_PATCHLEVEL__
+__GNUG__
+
+__clang__
+__clang_major__
+__clang_minor__
+__clang_patchlevel__
+*/
 
 
 //#define FORCEINLINE __forceinline
 //#define INLINE __inline 
 
+///////////////////////////////////////////////////////////////////////////////////////
 #else //Linux
+///////////////////////////////////////////////////////////////////////////////////////
 
 typedef char                tbyte;      // signed char
 typedef unsigned char       ubyte;      // unsigned char
@@ -111,11 +146,18 @@ typedef unsigned int        uisize_t;
 //#define FORCEINLINE   __forceinline
 //#define INLINE        __inline
 
-#if (__cplusplus == 201103L)
-#define __CPLUSPLUS_VER_11
-#endif 
 
-#endif
+//cplusplus version
+#if (__cplusplus == __CPLUSPLUS_VER_11_)
+    #define __CPLUSPLUS_VER_    __CPLUSPLUS_VER_11_
+#else
+    #define __CPLUSPLUS_VER_    __CPLUSPLUS_VER_98_
+#endif //__cplusplus version
+
+///////////////////////////////////////////////////////////////////////////////////////
+#endif // OS Type
+///////////////////////////////////////////////////////////////////////////////////////
+
 
 #define FOURCC(c0, c1, c2, c3) (c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))   //< Creates A FOURCC Code 
 
@@ -130,10 +172,20 @@ typedef unsigned int        uisize_t;
 #define ASSERT assert
 
 #else
+    
 #include <assert.h>
 #define ASSERT assert
 
-#endif
+#endif //ASSERTION
+
+//NULL pointer
+#if (__CPLUSPLUS_VER_ == __CPLUSPLUS_VER_11__)
+    #define NULLPTR     nullptr
+#else
+    #define NULLPTR     NULL
+#endif //NULL pointer
+
+
 
 enum VARDATATYPE
 {

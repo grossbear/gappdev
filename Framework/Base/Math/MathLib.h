@@ -22,7 +22,7 @@
 #include "Sqrt.h"
 #include "Trigonometry.h"
 
-#include "PseudoRandom.h"
+#include "Prng.h"
 #include "Perlin.h"
 
 #include "Vector.h"

@@ -1,1 +1,0 @@
-g++ -std=gnu++11 -o prog.exe main.cpp

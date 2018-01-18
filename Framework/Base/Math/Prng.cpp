@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-// PseudoRandom.cpp
+// Prng.cpp
 //
 // Pseudo random number generation functions
 // Generates values in range -1,1
@@ -11,7 +11,7 @@
 #include "Base/Common/PlatformTypes.h"
 #include "MathConst.h"
 #include "MathLibDefs.h"
-#include "PseudoRandom.h"
+#include "Prng.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Pseudo Random Number Generation Function
@@ -39,7 +39,17 @@ float mprng(int32t x, int32t y, int32t z)
     int32t n = x + y * 57 + z * 131;
     n = (n << 13) ^ n;
     
-    return (1.0f - ((n*(n*n*15731+789221) + 1376312589) & 0x7fffffff) / 1073741824.0f);
+    return (1.0f - ((n*(n*n*15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0f);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+// Pseudo Random Number Generation Function
+float mprng(int32t x, int32t y, int32t z, int32t w)
+{
+    int32t n = x + y * 57 + z * 131 + w * 323;
+	n = (n << 13) ^ n;
+
+	return (1.0f - ((n*(n*n*15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0f);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
