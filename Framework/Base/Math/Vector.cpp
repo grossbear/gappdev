@@ -48,10 +48,14 @@ T CMVec2LengthSq(const CMVector2D<T> &v)
 template <class T>
 void CMVec2Normalize(CMVector2D<T> &vOut, const CMVector2D<T> &vIn)
 {
-	T revSq = MVEC2REVSQRT(vIn.x, vIn.y); 
+    T vec[2] = {vIn.x, vIn.y};
+	T revsq = MVEC2REVSQRT(vIn.x, vIn.y); 
 
-	vOut.x *= revSq;
-	vOut.y *= revSq;
+    vec[0] *= revsq;
+    vec[1] *= revsq;
+    
+	vOut.x = vec[0];
+	vOut.y = vec[1];
 
 	return ;
 }
@@ -364,11 +368,14 @@ T CMVec3DistanceSq(const CMVector3D<T> &p0, const CMVector3D<T> &p1)
 template <class T>
 void CMVec3Normalize(CMVector3D<T> &vOut, const CMVector3D<T> &vIn)
 {
+    T vec[3] = {vIn.x, vIn.y, vIn.z};
     T revsq = MVEC3REVSQRT(vIn.x, vIn.y, vIn.z);
-
-    vOut.x *= revsq;
-    vOut.y *= revsq;
-    vOut.z *= revsq;
+    
+    vec[0] *= revsq;
+    vec[1] *= revsq;
+    vec[2] *= revsq;
+    
+    memcpy(vOut, vec, sizeof(T)*3);
 
     return ;
 }
@@ -663,11 +670,15 @@ T CMVec4DistanceSq(CMVector4D<T> &p0, CMVector4D<T> &p1)
 template <class T>
 void CMVec4Normalize(CMVector4D<T> &vOut, const CMVector4D<T> &vIn)
 {
+    T vec[4] = {vIn.x, vIn.y, vIn.z, vIn.w};
     T revsq = MVEC4REVSQRT(vIn.x, vIn.y, vIn.z, vIn.w);
+    
+    vec[0] *= revsq;
+    vec[1] *= revsq;
+    vec[2] *= revsq;
+    vec[3] *= revsq;
 
-    vOut.x *= revsq;
-    vOut.y *= revsq;
-    vOut.z *= revsq;
+    memcpy(vOut, vec, sizeof(T)*4);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////

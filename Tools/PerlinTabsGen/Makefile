@@ -7,11 +7,9 @@ FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 MATHLIBPATH = ../../Libs/Math
 
-_OBJ = main.o perlintabsgen.o mathlib.a
+_OBJ = main.o perlintabsgen.o intnumgen.o mathlib.a
 
 all: MakeDir $(_OBJ) perlintabsgen.exe
-
-tool: main.o perlintabsgen.o 
 
 MakeDir:
 	mkdir -p $(OBJDIR)
@@ -27,9 +25,15 @@ mathlib.a:
 	make -C $(MATHLIBPATH)
 	cp $(MATHLIBPATH)/mathlib.a $(OBJDIR)/mathlib.a
 
+intnumgen.o: IntNumGen.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c IntNumGen.cpp
+	mv IntNumGen.o $(OBJDIR)/intnumgen.o
+
 perlintabsgen.o: PerlinTabsGen.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c PerlinTabsGen.cpp
 	mv PerlinTabsGen.o $(OBJDIR)/perlintabsgen.o
+
+tool: main.o perlintabsgen.o intnumgen.o
 
 .PHONY: clean
 

@@ -9,17 +9,29 @@
 #include "Base/Math/MathLib.h"
 #include "PerlinTabsGen.h"
 
+//Two Operations Must Be Equal (Value % NOISE_WRAP_INDEX) == (Value & NOISE_MOD_MASK)
+//So NOISE_WRAP_INDEX Must Be A Power Of Two And NOISE_MOD_MASK Must Be A Power Of 2-1
+//If We Implement Indeces As Unsigned Chars, So NOISE_WRAP_INDEX Should Be Less Than Or 
+//Equal To 256. There's No Good Reason To Change It From 256.
+
 #define NOISE_WRAP_INDEX	256
 #define NOISE_MOD_MASK		255
 
-#define NOISE_LARGE_PWR2    4096
-
+// A Large Power Of Two 2, We'll Go For 4096, to Add To Negative Numbers
+// In Order To Make Them Positive
+#define NOISE_LARGE_PWR2 4096
 ////////////////////////////////////////////////////////////////////////////////////////////////
-CPerlinTabsGen::CPerlinTabsGen(unsigned short seed)
+CPerlinTabsGen::CPerlinTabsGen(unsigned short seed):
+mPtrTabIndex(0),
+mIntNumGen(CIntNumGen(seed))
 {
     ResetPointers();
     AllocTabels();
-    InitSeriesValues(seed);
+    
+    InitFltGenPtrsTab();
+    ShuffleFltGenPtrs(seed);
+    
+    GenerateLookUpTables();
 }
     
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,11 +64,23 @@ const float *CPerlinTabsGen::GetGradientTable4D() const
 ////////////////////////////////////////////////////////////////////////////////////////////////
 const ubyte *CPerlinTabsGen::GetPermutationTable() const
 {
+    return mPermutationTable;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////
 int CPerlinTabsGen::GetTablesSize() const
 {
     return 2*NOISE_WRAP_INDEX+2;
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+float CPerlinTabsGen::GenRandomFloat()
+{
+    float rndval = (this->*m_fpRndFltGen[mPtrTabIndex])();
+    mPtrTabIndex++;
+    mPtrTabIndex = (mPtrTabIndex >= MAX_FUNC_PTR_TAB_SIZE) ? (0) : (mPtrTabIndex);
+    
+    return rndval;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,48 +113,144 @@ void CPerlinTabsGen::DeallocTables()
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void CPerlinTabsGen::ResetPointers()
 {
-    mGradientTable1D = nullptr;
-    mGradientTable2D = nullptr;
-    mGradientTable3D = nullptr;
-    mGradientTable4D = nullptr;
-    mPermutationTable = nullptr;
+    mGradientTable1D = NULLPTR;
+    mGradientTable2D = NULLPTR;
+    mGradientTable3D = NULLPTR;
+    mGradientTable4D = NULLPTR;
+    mPermutationTable = NULLPTR;
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
-void CPerlinTabsGen::InitSeriesValues(unsigned short seed)
+void CPerlinTabsGen::InitFltGenPtrsTab()
 {
-    mSumVal1 = seed;
-    mSumVal2 = seed >> 1;
+    m_fpRndFltGen[0] = &CPerlinTabsGen::RndFloatGen1;
+    m_fpRndFltGen[1] = &CPerlinTabsGen::RndFloatGen2;
+    m_fpRndFltGen[2] = &CPerlinTabsGen::RndFloatGen3;
+    m_fpRndFltGen[3] = &CPerlinTabsGen::RndFloatGen4;
     
-    //find nearest prim number
-    uint32t prim = (mSumVal1 < 10) ? (11) : (mSumVal1+1);
-    while(!misprim(prim))
-        prim++;
+    m_fpRndFltGen[4] = &CPerlinTabsGen::RndFloatGen1;
+    m_fpRndFltGen[5] = &CPerlinTabsGen::RndFloatGen2;
+    m_fpRndFltGen[6] = &CPerlinTabsGen::RndFloatGen3;
+    m_fpRndFltGen[7] = &CPerlinTabsGen::RndFloatGen4;
     
-    mSumVal1 = mSumVal1 & prim;
-    
-    mFibbVal1 = 1;
-    mFibbVal2 = 2;
+    m_fpRndFltGen[8] = &CPerlinTabsGen::RndFloatGen1;
 }
-////////////////////////////////////////////////////////////////////////////////////////////////
-int CPerlinTabsGen::CalcNextPositionValue()
+
+void CPerlinTabsGen::ShuffleFltGenPtrs(unsigned short seed)
 {
-    int NewFibbVal = mFibbVal1 + mFibbVal2;
-    int NewVal = mFibbVal1 + mSumVal1;
+    unsigned int index1 = (seed >> 1) & 0b111;
+    unsigned int index2 = ((seed << 1)&seed) & 0b111;
     
-    mFibbVal1 = mFibbVal2;
-    mFibbVal2 = NewFibbVal;
+    float (CPerlinTabsGen::*fptr)(void);
     
-    int tmp = mSumVal1;
-    mSumVal1 = mSumVal2;
-    mSumVal2 = tmp;
+    fptr = m_fpRndFltGen[index1];
+    m_fpRndFltGen[index1] = m_fpRndFltGen[index1+1];
+    m_fpRndFltGen[index1+1] = fptr;
     
-    return NewVal;
+    fptr = m_fpRndFltGen[index2];
+    m_fpRndFltGen[index2] = m_fpRndFltGen[index2+1];
+    m_fpRndFltGen[index2+1] = fptr;
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
+// Fill up gradient and permutation tables
 void CPerlinTabsGen::GenerateLookUpTables()
 {
+    int i,j,k;
+    
+    for(i = 0; i < NOISE_WRAP_INDEX; i++)
+    {
+        // Put index into permutation table
+        mPermutationTable[i] = i;
+        
+        // Generate a pseudo random values
+        mGradientTable1D[i] = GenRandomFloat();
+        
+        // Generate a pseudo random 2D gradient vector
+        mGradientTable2D[i].x = GenRandomFloat();
+        mGradientTable2D[i].y = GenRandomFloat();
+        CMVec2Normalize(mGradientTable2D[i],mGradientTable2D[i]);
+        
+        // Generate a pseudo random 3D gradient vector
+        mGradientTable3D[i].x = GenRandomFloat();
+        mGradientTable3D[i].y = GenRandomFloat();
+        mGradientTable3D[i].z = GenRandomFloat();
+        CMVec3Normalize(mGradientTable3D[i],mGradientTable3D[i]);
+        
+        // Generate a pseudo random 4D gradient vector
+        mGradientTable4D[i].x = GenRandomFloat();
+        mGradientTable4D[i].y = GenRandomFloat();
+        mGradientTable4D[i].z = GenRandomFloat();
+        mGradientTable4D[i].w = GenRandomFloat();
+        CMVec4Normalize(mGradientTable4D[i],mGradientTable4D[i]);
+    }
+    
+    // Shuffle permutation table up to NOISE_WRAP_INDEX
+	while(--i)
+	{
+		k = mPermutationTable[i];
+		mPermutationTable[i] = mPermutationTable[ j = mIntNumGen.GenNewIntValue() & NOISE_MOD_MASK ];
+		mPermutationTable[j] = k;
+	}
+    
+    //Add the rest of the tables entries In. 
+	//Duplicating indices and entries so they can effectively be indexed
+	//by unsigned chars
+	for(i=0; i<NOISE_WRAP_INDEX+2; i++)
+	{
+		mPermutationTable[NOISE_WRAP_INDEX + i] = mPermutationTable[i];
+
+		mGradientTable1D[NOISE_WRAP_INDEX + i] = mGradientTable1D[i];
+
+		mGradientTable2D[NOISE_WRAP_INDEX + i].x = mGradientTable2D[i].x;
+		mGradientTable2D[NOISE_WRAP_INDEX + i].y = mGradientTable2D[i].y;
+
+		mGradientTable3D[NOISE_WRAP_INDEX + i].x = mGradientTable3D[i].x;
+		mGradientTable3D[NOISE_WRAP_INDEX + i].y = mGradientTable3D[i].y;
+		mGradientTable3D[NOISE_WRAP_INDEX + i].z = mGradientTable3D[i].z;
+        
+        mGradientTable4D[NOISE_WRAP_INDEX + i].x = mGradientTable4D[i].x;
+		mGradientTable4D[NOISE_WRAP_INDEX + i].y = mGradientTable4D[i].y;
+		mGradientTable4D[NOISE_WRAP_INDEX + i].z = mGradientTable4D[i].z;
+        mGradientTable4D[NOISE_WRAP_INDEX + i].w = mGradientTable4D[i].w;
+	}
+    
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+float CPerlinTabsGen::RndFloatGen1()
+{
+    int pos = mIntNumGen.GenNewIntValue();
+    float rndval = mprng(pos);
+    return rndval;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+float CPerlinTabsGen::RndFloatGen2()
+{
+    int x = mIntNumGen.GenNewIntValue();
+    int y = mIntNumGen.GenNewIntValue();
+    float rndval = mprng(x,y);
+    return rndval;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+float CPerlinTabsGen::RndFloatGen3()
+{
+    int x = mIntNumGen.GenNewIntValue();
+    int y = mIntNumGen.GenNewIntValue();
+    int z = mIntNumGen.GenNewIntValue();
+    float rndval = mprng(x,y,z);
+    return rndval;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////
+float CPerlinTabsGen::RndFloatGen4()
+{
+    int x = mIntNumGen.GenNewIntValue();
+    int y = mIntNumGen.GenNewIntValue();
+    int z = mIntNumGen.GenNewIntValue();
+    int w = mIntNumGen.GenNewIntValue();
+    float rndval = mprng(x,y,z,w);
+    return rndval;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////

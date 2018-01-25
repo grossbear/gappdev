@@ -495,11 +495,13 @@ M_API uint64t mlpow2(uint64t n)
 template <typename Ttype>
 bool misprim(Ttype n)
 {    
-    if( !((n>>3) & 0x0111b) ) 
+    if(n <= 1) return false;
+    //if( !((n>>3) & 0x0111b) ) 
+    if(!(n>>3))
     {
         //0100 - 4
         //0110 - 6
-        return (n ^ 0x0100b) && (n ^ 0x0110b);
+        return (n ^ 0b100) && (n ^ 0b110);
     }
     
     return n%2 && n%3 && n%5 && n%7;

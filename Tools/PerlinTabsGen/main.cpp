@@ -3,43 +3,37 @@
 #include <iostream>
 #include <string>
 #include "Base/Math/MathLib.h"
+#include "IntNumGen.h"
 #include "PerlinTabsGen.h"
-
 
 
 int main()
 {
     std::cout << "Perlin Noise Tables Gen Programme\n";
     
-    int x = 568;
-    float genval = mprng(x);
-     
-    std::cout << "generated value: " << genval << std::endl;
-    
-    std::string strval = std::to_string(genval);
-    std::cout << "gen value string: " << strval << std::endl;
-    
-    unsigned short seed = 65;
-    CPerlinTabsGen TabsGen(seed);
+    unsigned short seed = 565;
     
     std::cout << "cplusplus = " << __CPLUSPLUS_VER_ << std::endl;
 
+    CPerlinTabsGen PerlinGenTabs(seed);
     
-    /*int val1 = TabsGen.CalcNextPositionValue();
-    int val2 = TabsGen.CalcNextPositionValue();
-    int val3 = TabsGen.CalcNextPositionValue();
-    int val4 = TabsGen.CalcNextPositionValue();
-    int val5 = TabsGen.CalcNextPositionValue();
-    int val6 = TabsGen.CalcNextPositionValue();
+    const float *gradTable1D = PerlinGenTabs.GetGradientTable1D();
+    const float *gradTable2D = PerlinGenTabs.GetGradientTable2D();
     
-    std::cout << "val1 = " << val1 << std::endl;
-    std::cout << "val2 = " << val2 << std::endl;
-    std::cout << "val3 = " << val3 << std::endl;
+    for(int i = 0; i < 10; i+=2)
+    {
+        //float x = gradTable2D[i];
+        //float y = gradTable2D[i+1];
+        //std::cout << "vecx = " << x << ", vecy = " << std::endl;
+        std::cout << "vecx = " << gradTable2D[i] << ", vecy = " << gradTable2D[i+1] << std::endl;
+    }
+    /*for(int i = 0; i < 10; i++)
+    {
+        float rndflt = PerlinGenTabs.GenRandomFloat();
+        std::cout << "rnd flt = " << rndflt << std::endl;
+    }*/
+   
     
-    std::cout << "val4 = " << val4 << std::endl;
-    std::cout << "val5 = " << val5 << std::endl;
-    std::cout << "val6 = " << val6 << std::endl;*/
     
-
     return 0;
 }
