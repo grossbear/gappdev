@@ -9,8 +9,6 @@
 #include <math.h>
 
 #include "Base/Common/PlatformTypes.h"
-#include "MathConst.h"
-#include "MathLibDefs.h"
 #include "Prng.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////

@@ -1,28 +1,12 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//  MathPrim.h
+//  ElemFunc.h
 //
-//  Primary Math Functions 
-//  
-//  Refactor: 12-04-2017
+//  Math Elementary Functions Header File
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef _MATHPRIM_H_
-#define _MATHPRIM_H_
-
-// INTORFLOAT Union For Easy Access To Bits Of A Float.
-union INTFLOAT
-{
-    int32t  i;          // As Integer
-    float   f;          // As Float
-    struct              // As Bit Fields
-    {
-        uint32t    sign:1;
-        uint32t    biasedexponent:8;
-        uint32t    significand;
-    }
-    bits;
-};
+#ifndef _ELEMFUNC_H_
+#define _ELEMFUNC_H_
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Converting Functions From Integer To Float Type And Vice Versa
@@ -30,20 +14,6 @@ union INTFLOAT
 M_API float     mitof(int32t i);
 ///////////////////////////////////////////////////////////////////////////////////////
 M_API int32t    mftoi(float f);
-
-// INTORDOUBLE Union For Easy Access To Bits Of A Float.
-union INTDOUBLE
-{
-    int64t 	i;          // As 64-bit Integer
-    double	d;          // As Double
-    struct              // As Bit Fields
-    {
-        uint64t    sign:1;
-        uint64t    biasedexponent:11;
-        uint64t    significand;
-    }
-    bits;
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Converting Functions From Integer To Double Type And Vice Versa
@@ -431,7 +401,8 @@ double  mmodf(double x, double *y);
 float   mfmod(float x, float y);
 double  mfmodf(double x, double y);
 
+constexpr float GetPI();
 
-#include "MathPrim.inl"
+#include "ElemFunc.inl"
 
-#endif //_MATHPRIM_H_
+#endif //_ELEMFUNC_H_

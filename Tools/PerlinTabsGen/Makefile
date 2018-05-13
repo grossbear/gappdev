@@ -5,7 +5,7 @@ CFLAGS=-std=gnu++11
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
-MATHLIBPATH = ../../Libs/Math
+MATHLIBPATH = ../../Libs/MathLib
 
 _OBJ = main.o perlintabsgen.o intnumgen.o mathlib.a
 

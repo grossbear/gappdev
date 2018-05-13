@@ -21,6 +21,7 @@
 // Library Uses It's Own Conversion From Floating Point Number To Integer And Vice-Versa
 #define MATH_NO_FPU
 
+
 // Build Classes Instantiation Using Following Data Types  
 #define MATH_DOUBLE_INST
 #define MATH_LONG_DOUBLE_INST

@@ -9,22 +9,22 @@
 #include <memory.h>
 
 #include "Base/Common/PlatformTypes.h"
-#include "MathConst.h"
+#include "MathConsts.h"
 #include "MathLibDefs.h"
 
-#include "tfixed32.h"
-#include "thalf.h"
+#include "Types/tfixed32.h"
+#include "Types/thalf.h"
 
-#include "MathPrim.h"
-#include "Sqrt.h"
-#include "Trigonometry.h"
-#include "PrimFunc.h"
+#include "Elementary/ElemFunc.h"
+#include "Elementary/Sqrt.h"
+#include "Elementary/Trigonometry.h"
 
-#include "Vector.h"
-#include "Plane.h"
-#include "Matrix.h"
-#include "Quaternion.h"
-#include "Algebra.h"
+#include "Algebra/AlgebraElemFunc.inl"
+#include "Algebra/Vector.h"
+#include "Algebra/Plane.h"
+#include "Algebra/Matrix.h"
+#include "Algebra/Quaternion.h"
+#include "Algebra/Algebra.h"
 
 #include "3DMath.h"
 #include "3DMath.cpp"

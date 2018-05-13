@@ -8,16 +8,17 @@
 #include <math.h>
 
 #include "Base/Common/PlatformTypes.h"
-#include "MathConst.h"
+#include "MathConsts.h"
 #include "MathLibDefs.h"
 
-#include "tfixed32.h"
-#include "thalf.h"
+#include "Types/tfixed32.h"
+#include "Types/thalf.h"
 
-#include "MathPrim.h"
-#include "Sqrt.h"
-#include "Trigonometry.h"
-#include "PrimFunc.h"
+#include "Elementary/ElemFunc.h"
+#include "Elementary/Sqrt.h"
+#include "Elementary/Trigonometry.h"
+
+#include "AlgebraElemFunc.inl"
 
 #include "Vector.h"
 

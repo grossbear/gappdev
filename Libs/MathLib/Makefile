@@ -1,0 +1,64 @@
+#MathLib static library build makefile
+
+CXX=g++
+ARCH=ar
+CFLAGS=-std=gnu++11
+OBJDIR=obj
+FRAMEWORKPATH = ../../Framework
+MATHPATH = ../../Framework/Base/Math
+
+_OBJ = ElemFunc.o Sqrt.o Trigonometry.o Prng.o Perlin.o\
+Vector.o Plane.o Matrix.o Quaternion.o 3DMath.o
+
+all: MakeDir $(_OBJ) mathlib.a
+
+MakeDir:
+	mkdir -p $(OBJDIR)
+	
+mathlib.a: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
+	$(ARCH) rcs $@ $^
+	
+ElemFunc.o: $(MATHPATH)/Elementary/ElemFunc.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/ElemFunc.cpp
+	mv ElemFunc.o $(OBJDIR)/ElemFunc.o
+	
+Sqrt.o: $(MATHPATH)/Elementary/Sqrt.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/Sqrt.cpp
+	mv Sqrt.o $(OBJDIR)/Sqrt.o
+	
+Trigonometry.o: $(MATHPATH)/Elementary/Trigonometry.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/Trigonometry.cpp
+	mv Trigonometry.o $(OBJDIR)/Trigonometry.o
+	
+Prng.o: $(MATHPATH)/Random/Prng.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Prng.cpp
+	mv Prng.o $(OBJDIR)/Prng.o
+	
+Perlin.o: $(MATHPATH)/Random/Perlin.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Perlin.cpp
+	mv Perlin.o $(OBJDIR)/Perlin.o
+	
+Vector.o: $(MATHPATH)/Algebra/VectorInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/VectorInst.cpp
+	mv VectorInst.o $(OBJDIR)/Vector.o
+	
+Plane.o: $(MATHPATH)/Algebra/PlaneInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/PlaneInst.cpp
+	mv PlaneInst.o $(OBJDIR)/Plane.o
+	
+Matrix.o: $(MATHPATH)/Algebra/MtxInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/MtxInst.cpp
+	mv MtxInst.o $(OBJDIR)/Matrix.o
+	
+Quaternion.o: $(MATHPATH)/Algebra/QuatInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/QuatInst.cpp
+	mv QuatInst.o $(OBJDIR)/Quaternion.o
+	
+3DMath.o: $(MATHPATH)/Space/3DMathInst.cpp
+	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Space/3DMathInst.cpp
+	mv 3DMathInst.o $(OBJDIR)/3DMath.o
+	
+.PHONY: clean
+
+clean:
+	rm -rf $(OBJDIR) mathlib.a

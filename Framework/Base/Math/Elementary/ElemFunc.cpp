@@ -1,9 +1,9 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-//  MathFunc.h
+//  ElemFunc.h
 //
-//  Some Mathematics Primary Functions Definitions
+//  Mathematics Elemntary Functions Definitions
 //  Created: 11-03-2007
-//  Refactor: 06-10-2017, 12-04-2017
+//  Refactor: 06-10-2017, 12-04-2017, 13-05-2018
 //
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -11,7 +11,7 @@
 
 #include "Base/Common/PlatformTypes.h"
     
-#include "MathConst.h"
+#include "MathConsts.h"
 #include "MathLibDefs.h"
 
 #ifdef MATH_PRIM_SSE 
@@ -19,12 +19,14 @@
 #include <memory.h>
 #endif
 
-#include "MathPrim.h"
+#include "ElemFunc.h"
+#include "IntReal.h"
 
+///////////////////////////////////////////////////////////////////////////////////////
 // Bias Constant Used For Fast Conversions Between Int And Float. First Element
 // In INTORFLOAT Union Is Integer -- We Are Storing Biased Exponent 23, Mantissa .1, Which
 // Is Equivalent To 1.5 x 2^23. 
-const INTFLOAT  biasflt = {((23 + 127) << 23) + (1 << 22)};
+static const INTFLOAT  biasflt = {((23 + 127) << 23) + (1 << 22)};
 // 2^23 = 8388608
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -49,11 +51,10 @@ M_API float mitof(int32t i)
 }
 ///////////////////////////////////////////////////////////////////////////////////////
 
-#ifdef MATH_DOUBLE_INST
 // Bias Constant Used For Fast Conversions Between Int And Double. First Element
 // In INTORDOUBLE Union Is Integer -- We Are Storing Biased Exponent 52, Mantissa .1, Which
 // Is Equivalent To 1.5 x 2^52.
-const INTDOUBLE biasdbl = {(uint64t(52 + 1023) << 52) + (uint64t(1) << 51)};
+static const INTDOUBLE biasdbl = {(uint64t(52 + 1023) << 52) + (uint64t(1) << 51)};
 // 2^52 = 4503599627370496
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -77,8 +78,6 @@ M_API double mitod(int64t i)
     return di.d - biasdbl.d;
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-
-#endif //MATH_DOUBLE_INST
 
 ///////////////////////////////////////////////////////////////////////////////////////
 M_API float mmakef(int32t sign, int32t exp, int32t mant)
@@ -733,7 +732,7 @@ template double mnorma<double>(double rad);
 float mfrc(float x)
 { 
     float intval =  mfloor(mabs(x));
-    //pfloorf(x);
+
     if(mless0(x))
         return intval + x;
     else
@@ -750,3 +749,8 @@ double mfrc(double x)
         return mabs(intval - x);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
+
+constexpr float GetPI() 
+{
+    return 3.14f;//CMathConst<float>::MATH_PI;
+}

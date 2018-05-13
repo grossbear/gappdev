@@ -10,16 +10,16 @@
 
 #include "Base/Common/PlatformTypes.h"
 
-#include "MathConst.h"
+#include "MathConsts.h"
 #include "MathLibDefs.h"
 
-#include "tfixed32.h"
-#include "tfixed64.h"
-#include "thalf.h"
+#include "Types/tfixed32.h"
+#include "Types/tfixed64.h"
+#include "Types/thalf.h"
 
-#include "MathPrim.h"
-
+#include "ElemFunc.h"
 #include "Trigonometry.h"
+#include "IntReal.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -32,39 +32,39 @@
 
 const INTFLOAT sinus_tab [TABLESIZE_SIN] = 
 {
-    #include "sin_table256.h"
+    #include "Tables/sin_table256.h"
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 const uint32t fxcos_tab [FIXED_TABLE_SIZE+1] = 
 {
-    #include "fxcos_table1024.h"
+    #include "Tables/fxcos_table1024.h"
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 const uint32t fxsin_tab [FIXED_TABLE_SIZE+1] =
 {
-    #include "fxsin_table1024.h"
+    #include "Tables/fxsin_table1024.h"
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 const uint32t fxtan_tab [FIXED_TABLE_SIZE+1] =
 {
-    #include "fxtan_table1024.h"
+    #include "Tables/fxtan_table1024.h"
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 const uint32t fxacos_tab [FIXED_TABLE_SIZE+1] =
 {
-    #include "fxacos_table1024.h"
+    #include "Tables/fxacos_table1024.h"
 };
 ///////////////////////////////////////////////////////////////////////////////////////
 const ubyte acosdeg_tab [101] = 
 {
-    #include "acosdeg_table.h"
+    #include "Tables/acosdeg_table.h"
 };
 ///////////////////////////////////////////////////////////////////////////////////////
-const INTFLOAT bias = {((23 + 127) << 23) + (1 << 22)};
+static const INTFLOAT bias = {((23 + 127) << 23) + (1 << 22)};
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Sinus Function Using Precalculated Table
-float m_sinus_tabf(float angle)
+float m_tsinf(float angle)
 {
     ASSERT(angle >= -10000.0f && angle <= 10000.0f);
 
@@ -102,14 +102,12 @@ void m_tsincosf(float angle, float &sin_val, float &cos_val)
     cos_val = sinus_tab[i].f;
 }
 
+#ifdef MATH_FIXED_INST
 ///////////////////////////////////////////////////////////////////////////////////////
 // Sinus Function Using Precalculated Table
 tfixed32<16> m_tsinx(const tfixed32<16> &x)
 {
-    //CMathConst< tfixed32<16> >::MATH_2PI; - not compiling
-    //ToDo: make it compile
-    
-    static const tfixed32<16> fx2pi(CONST_2PI);
+    static const tfixed32<16> fx2pi = CMathConst< tfixed32<16> >::MATH_2PI;
     
     tfixed32<16> fxval = (*(int32t*)x < 0) ? (fx2pi - x) : (x);
     fxval /= fx2pi;
@@ -131,7 +129,7 @@ tfixed32<16> m_tsinx(const tfixed32<16> &x)
 // Cosinus Function Using Precalculated Table
 tfixed32<16> m_tcosx(const tfixed32<16> &x)
 {
-    static const tfixed32<16> fx2pi(CONST_2PI);
+    static const tfixed32<16> fx2pi = CMathConst< tfixed32<16> >::MATH_2PI;
     
     tfixed32<16> fxval = (*(int32t*)x < 0) ? (-x) : (x);
     fxval /= fx2pi;
@@ -175,7 +173,7 @@ tfixed32<16> m_tacosx(const tfixed32<16> &x)
 // SinCos Function Using Precalculated Table
 void m_tsincosx(const tfixed32<16> &angle, tfixed32<16> &sin_val, tfixed32<16> &cos_val)
 {    
-    static const tfixed32<16> fx2pi(CONST_2PI);
+    static const tfixed32<16> fx2pi = CMathConst< tfixed32<16> >::MATH_2PI;
     
     sin_val = (*(int32t*)angle < 0) ? (fx2pi - angle) : (angle);
     sin_val /= fx2pi;
@@ -201,6 +199,8 @@ void m_tsincosx(const tfixed32<16> &angle, tfixed32<16> &sin_val, tfixed32<16> &
     intval = fxcos_tab[tabidx];
     *(int32t*)cos_val = intval;
 }
+///////////////////////////////////////////////////////////////////////////////////////
+#endif //MATH_FIXED_INST
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Arcus Cosinus Table Approxiamtion In Degrees
