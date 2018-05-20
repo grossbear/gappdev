@@ -21,6 +21,8 @@
 // Library Uses It's Own Conversion From Floating Point Number To Integer And Vice-Versa
 #define MATH_NO_FPU
 
+// Library Uses ILM Functions In Converting Float Types Into Half Type
+#define MATH_ILM_HALF_CONVERSION
 
 // Build Classes Instantiation Using Following Data Types  
 #define MATH_DOUBLE_INST

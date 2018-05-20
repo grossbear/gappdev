@@ -10,12 +10,12 @@
 
 #include "Base/Common/PlatformTypes.h"
 
-#include "MathConst.h"
+#include "MathConsts.h"
 #include "MathLibDefs.h"
 
 #include "thalf.h"
 
-
+#ifdef MATH_ILM_HALF_CONVERSION
 ///////////////////////////////////////////////////////////////////////////////////////
 // Float To Half Conversion
 // Including Zeros, Denormalized Numbers And Exponent Overflows
@@ -147,9 +147,9 @@ uint16t mftoh(float f)
 	    return s | (e << 10) | (m >> 13);
     }
 }
-
+#else //Conversion Function From ATI SDK
 ///////////////////////////////////////////////////////////////////////////////////////
-uint16t mftoh2(float f)
+uint16t mftoh(float f)
 {
     uint32t x = *(uint32t *)&f;
     uint32t sign = (uint16t)(x >> 31);
@@ -180,82 +180,9 @@ uint16t mftoh2(float f)
 
     return half;
 }
+#endif //MATH_ILM_HALF_CONVERSION
 
-
-///////////////////////////////////////////////////////////////////////////////////////
-// Converting Array Of Float Values To Half Values
-void mftoh(uint16t *h,const float *f, int32t num)
-{
-    ASSERT(h != NULL);
-    ASSERT(f != NULL);
-    ASSERT(num > 0);
-
-    for (int32t idx = 0; idx < num; idx++)
-    {
-        int32t i = *(int32t*)&f[idx];
-
-        register int32t  s =  (i >> 16)  & 0x00008000;
-        register int32t  e =  ((i >> 23) & 0x000000ff) - (127 - 15);
-        register int32t  m =   i         & 0x007fffff;
-
-        
-        // Now reassemble s, e and m into a half:
-        if (e <= 0)
-        {
-	        if (e < -10)
-            {
-                h[idx] = s;
-                continue;
-	        }
-
-	        m = (m | 0x00800000) >> (1 - e);
-
-	        if (m &  0x00001000)
-	            m += 0x00002000;
-
-            h[idx] = s | (m >> 13);
-            continue;
-        }
-        else if (e == 0xff - (127 - 15))
-        {
-	        if (m == 0)
-	        {
-                h[idx] = s | 0x7C00;
-                continue;
-	        }
-	        else
-	        {
-	            m >>= 13;
-                h[idx] = s | 0x7c00 | m | (m == 0);
-                continue;
-	        }
-        }
-        else
-        {
-	        if (m &  0x00001000)
-	        {
-	            m += 0x00002000;
-
-	            if (m & 0x00800000)
-	            {
-		            m =  0;		// overflow in significand,
-		            e += 1;		// adjust exponent
-	            }
-	        }
-
-	        if (e > 30)
-	        {
-                h[idx] = s | 0x7C00;
-                continue;
-	        }   			        
-            h[idx] = s | (e << 10) | (m >> 13); 
-        }
-
-    }
-    
-}
-
-
+#ifdef MATH_ILM_HALF_CONVERSION
 ///////////////////////////////////////////////////////////////////////////////////////
 // Converting Half Value To Float Value
 float mhtof(uint16t h)
@@ -311,8 +238,9 @@ float mhtof(uint16t h)
 
     return f;
 }
+#else
 ///////////////////////////////////////////////////////////////////////////////////////
-float mhtof_f(uint16t h)
+float mhtof(uint16t h)
 {
     uint32t sign = (uint32t)(h >> 15);
     uint32t mantissa = (uint32t)(h & ((1 << 10) - 1));
@@ -333,70 +261,7 @@ float mhtof_f(uint16t h)
 
     return *(float *)&f;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////
-// Converting Array Of Half Values To Float Values
-void mhtof(float *f,const uint16t *h, int32t num)
-{
-    ASSERT(f != NULL);
-    ASSERT(h != NULL);
-    ASSERT(num > 0);
-
-    for (int32t idx = 0; idx < num; idx++)
-    {   
-        int32t s = (h[idx] >> 15) & 0x00000001;
-        int32t e = (h[idx] >> 10) & 0x0000001f;
-        int32t m =  h[idx]        & 0x000003ff;
-
-        if (e == 0)
-        {
-            if (m == 0)
-	        {
-	            // Plus or minus zero
-                s = s << 31;
-                f[idx] = *(float*)&s;
-                continue;
-	        }
-	        else
-	        {
-	            // Denormalized number -- renormalize it
-	            while (!(m & 0x00000400))
-	            {
-		            m <<= 1;
-		            e -=  1;
-	            }
-
-	            e += 1;
-	            m &= ~0x00000400;
-	        } 
-        }
-        else if(e == 31)
-        {
-            if (m == 0)
-	        {
-	            // Positive or negative infinity
-                s = ((s << 31) | 0x7f800000);
-                f[idx] = *(float*)&s;
-                continue;
-	        }
-	        else
-	        {
-	            // Nan -- preserve sign and significand bits
-                s = ((s << 31) | 0x7f800000 | (m << 13));
-                f[idx] = *(float*)&s;
-                continue;
-	        }
-        }
-
-        // Normalized number
-        e = e + (127 - 15);
-        m = m << 13;
-
-        // Assemble s, e and m.
-        int32t i = (s << 31) | (e << 23) | m;
-        f[idx] = *(float*)&i;
-    }
-}
+#endif //MATH_ILM_HALF_CONVERSION
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -415,7 +280,6 @@ M_API void      msplith(uint16t h, int32t &sign, int32t &exp, int32t &mant)
     exp =  (h >> 10) & 31;
     mant = h & ((1 << 10) - 1);
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // Testing Value Functions

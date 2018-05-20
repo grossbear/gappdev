@@ -2,79 +2,67 @@
 
 CXX=g++
 ARCH=ar
-CFLAGS=-std=gnu++11
-LDFLAGS=-lSDL -lSDL_gfx
+CFLAGS=-std=gnu++11 -Wall -I. -c
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
 
-_OBJ = thalf.o ElemFunc.o Sqrt.o Trigonometry.o Prng.o Perlin.o\
+_OBJ = Half.o ElemFunc.o Sqrt.o Trigonometry.o Prng.o Perlin.o\
 Vector.o Plane.o Matrix.o Quaternion.o 3DMath.o
 
-all: $(_OBJ) mathlib.a
+all: MakeDir $(_OBJ) mathlib.a
 
 MakeDir:
 	mkdir -p $(OBJDIR)
 	
-# link
-mathlib.a: $(patsubst %,%,$(_OBJ))
+mathlib.a: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 	$(ARCH) rcs $@ $^
 	
-# pull in dependency info for *existing* .o files
--include $(_OBJ:.o=.d)
-
-# compile and generate dependency info	
-thalf.o: $(MATHPATH)/Types/thalf.cpp
+Half.o: $(MATHPATH)/Types/thalf.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Types/thalf.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Types/thalf.cpp > thalf.d
+	mv thalf.o $(OBJDIR)/Half.o
 	
 ElemFunc.o: $(MATHPATH)/Elementary/ElemFunc.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/ElemFunc.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/ElemFunc.cpp > ElemFunc.d
+	mv ElemFunc.o $(OBJDIR)/ElemFunc.o
 	
 Sqrt.o: $(MATHPATH)/Elementary/Sqrt.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/Sqrt.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/Sqrt.cpp > Sqrt.d
+	mv Sqrt.o $(OBJDIR)/Sqrt.o
 	
 Trigonometry.o: $(MATHPATH)/Elementary/Trigonometry.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/Trigonometry.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Elementary/Trigonometry.cpp > Trigonometry.d
+	mv Trigonometry.o $(OBJDIR)/Trigonometry.o
 	
 Prng.o: $(MATHPATH)/Random/Prng.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Prng.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Prng.cpp > Prng.d
+	mv Prng.o $(OBJDIR)/Prng.o
 	
 Perlin.o: $(MATHPATH)/Random/Perlin.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Perlin.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Perlin.cpp > Perlin.d
+	mv Perlin.o $(OBJDIR)/Perlin.o
 	
 Vector.o: $(MATHPATH)/Algebra/VectorInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/VectorInst.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/VectorInst.cpp > Vector.d
-	mv VectorInst.o Vector.o
+	mv VectorInst.o $(OBJDIR)/Vector.o
 	
 Plane.o: $(MATHPATH)/Algebra/PlaneInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/PlaneInst.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/PlaneInst.cpp > Plane.d
-	mv PlaneInst.o Plane.o
+	mv PlaneInst.o $(OBJDIR)/Plane.o
 	
 Matrix.o: $(MATHPATH)/Algebra/MtxInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/MtxInst.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/MtxInst.cpp > Matrix.d
-	mv MtxInst.o Matrix.o
+	mv MtxInst.o $(OBJDIR)/Matrix.o
 	
 Quaternion.o: $(MATHPATH)/Algebra/QuatInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/QuatInst.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/QuatInst.cpp > Quaternion.d
-	mv QuatInst.o Quaternion.o
+	mv QuatInst.o $(OBJDIR)/Quaternion.o
 	
 3DMath.o: $(MATHPATH)/Space/3DMathInst.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Space/3DMathInst.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Space/3DMathInst.cpp > 3DMath.d
-	mv 3DMathInst.o 3DMath.o
+	mv 3DMathInst.o $(OBJDIR)/3DMath.o
 	
 .PHONY: clean
 
-# remove compilation products
 clean:
-	rm -r *.d *.o mathlib.a
+	rm -rf $(OBJDIR) mathlib.a

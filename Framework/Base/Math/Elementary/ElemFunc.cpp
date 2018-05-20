@@ -749,8 +749,3 @@ double mfrc(double x)
         return mabs(intval - x);
 }
 ///////////////////////////////////////////////////////////////////////////////////////
-
-constexpr float GetPI() 
-{
-    return 3.14f;//CMathConst<float>::MATH_PI;
-}
