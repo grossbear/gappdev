@@ -2,7 +2,7 @@
 
 CXX=g++
 ARCH=ar
-CFLAGS=-std=gnu++11
+CFLAGS=-std=gnu++11 -Wall
 LDFLAGS=-lSDL -lSDL_gfx
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework

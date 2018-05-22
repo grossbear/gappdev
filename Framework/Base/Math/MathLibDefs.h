@@ -13,7 +13,13 @@
 
 // In-line Function And Force In line Macros
 #define M_INLINE       __inline
+#ifdef __linux__
+#define M_FORCEINL     __attribute__((always_inline)) inline
+#elif _WIN32
 #define M_FORCEINL     __forceinline
+#else
+#define M_FORCEINL     __inline
+#endif // Force Inline For Different Platforms
 
 // Primary Function That Has SSE Implementation
 #define MATH_PRIM_SSE

@@ -287,7 +287,6 @@ bool CMLineTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1
     if (intersect)
     {
         CMVector3D<T> vA,vB;
-        T angle = 0;
 
         if (CMIsPointInsideTriangle(intersectionPoint,vertex1,vertex2,vertex3))
         {
@@ -317,7 +316,6 @@ bool CMIsLineIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T>
     if (intersect)
     {
         CMVector3D<T> vA,vB;
-        T angle = 0;
 
         if (CMIsPointInsideTriangle(intersectionPoint,vertex1,vertex2,vertex3))
             return true;
@@ -343,7 +341,6 @@ bool CMRayTriangleIntersectPt(CMVector3D<T> &vOut, const CMVector3D<T> &vertex1,
     if (intersect)
     {
         CMVector3D<T> vA,vB;
-        T angle = 0;
 
         if (CMIsPointInsideTriangle(intersectionPoint,vertex1,vertex2,vertex3))
         {
@@ -372,7 +369,6 @@ bool CMIsRayIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D<T> 
     if (intersect)
     {
         CMVector3D<T> vA,vB;
-        T angle = 0;
 
         if (CMIsPointInsideTriangle(intersectionPoint,vertex1,vertex2,vertex3))
             return true;
@@ -429,7 +425,6 @@ bool CMIsSegmentIntersectTriangle(const CMVector3D<T> &vertex1, const CMVector3D
     if (intersect)
     {
         CMVector3D<T> vA,vB;
-        T angle = 0;
 
         if (CMIsPointInsideTriangle(intersectionPoint,vertex1,vertex2,vertex3))
             return true;

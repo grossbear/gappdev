@@ -109,13 +109,14 @@ bool CMPlaneLineIntersectByPoints(CMVector3D<T> &vOut, const CMPlane<T> &plane, 
         ASSERT(false);
         return false;
     }
-    
-    T one = T(1);
-    T inv = one/lenght;
-    dir.x *= lenght;
-    dir.y *= lenght;
-    dir.z *= lenght;
 
+#warning "Check function CMPlaneLineIntersectByPoints for correct calculation"
+    
+    //T one = T(1);
+    //T inv = one/lenght;//??
+    dir.x /= lenght; //dir.x *= lenght;
+    dir.y /= lenght; //dir.y *= lenght;
+    dir.z /= lenght; //dir.z *= lenght;
 
     return CMPlaneLineIntersect(vOut,plane,point1,dir);
 }

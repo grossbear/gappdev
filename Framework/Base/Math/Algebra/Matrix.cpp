@@ -289,7 +289,6 @@ void CMMtx33Rotate(CMMatrix33<T> &M, const CMVector3D<T> &vNormVec, T rad)
     MMTX33SINCOS(rad,sinA,cosA);
 
     T *m = (T*)M;
-    T one = T(1);
 
     T xx = vNormVec.x * vNormVec.x;
     T yy = vNormVec.y * vNormVec.y;
@@ -315,7 +314,7 @@ void CMMtx33Rotate(CMMatrix33<T> &M, const CMVector3D<T> &vNormVec, T rad)
 
     m[6] = onec * zx + ys;
     m[7] = onec * yz - xs;
-    m[8]= onec * zz + cosA;
+    m[8] = onec * zz + cosA;
 
 }
 
@@ -459,7 +458,6 @@ bool CMMtx44Inverse(CMMatrix44<T> &Out, const CMMatrix44<T> &M)
 {
     T m[16];
     T f[18];
-    const T *p = (const T*)M;
 
     f[0] = M._33*M._44 - M._43*M._34;
     f[1] = M._32*M._44 - M._42*M._34;
@@ -671,7 +669,6 @@ void CMMtx44Rotate(CMMatrix44<T> &M, const CMVector3D<T> &vNormVec, T rad)
     MMTX44SINCOS(rad,sinA,cosA);
 
     T *m = (T*)M;
-    T one = T(1);
 
     T xx = vNormVec.x * vNormVec.x;
     T yy = vNormVec.y * vNormVec.y;

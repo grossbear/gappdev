@@ -241,7 +241,7 @@ M_API bool mlcmp(float af, float bf, int32t maxDiff)
 
     int32t test = (ai^bi) >> 31;
 
-    ASSERT((test==0) || (0xffffffff == test));
+    ASSERT((test==0) || (0xffffffff == (uint32t)test));
 
     int32t diff = (((0x80000000 - ai)&(test)) | (ai & (~test))) - bi;
     int32t v1 = maxDiff + diff;

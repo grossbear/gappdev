@@ -221,10 +221,10 @@ template <class T>
 M_INLINE CMMatrix33<T> CMMatrix33<T>::operator / ( const T & val ) const
 {
     ASSERT(!mnear0(val));
-    T inv = T(1)/val;
-    return CMMatrix33(  _11*val, _12*val, _13*val,
-                        _21*val, _22*val, _23*val,
-                        _31*val, _32*val, _33*val);
+    //T inv = T(1)/val;
+    return CMMatrix33(  _11/val, _12/val, _13/val,
+                        _21/val, _22/val, _23/val,
+                        _31/val, _32/val, _33/val);
 }
 
 ////////////////////////////////////////////////////////////////////////////

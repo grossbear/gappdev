@@ -155,11 +155,11 @@ void CMVec2Sqrp(CMVector2D<T> &vOut, const CMVector2D<T> &v1, const CMVector2D<T
 template <class T>
 void CMVec2Cosrp(CMVector2D<T> &vOut, const CMVector2D<T> &v1, const CMVector2D<T> &v2, T factor)
 {
-    T ft = factor * CMathConst<T>::MATH_PI;
-    T f = (T(1) - MVEC2COS(ft))*T(0.5);
+    T angle = factor * CMathConst<T>::MATH_PI;
+    T prc = (T(1) - MVEC2COS(angle))*T(0.5);
     
-    T x = v1.x + ((v2.x - v1.x)*ft);
-    T y = v1.y + ((v2.y - v1.y)*ft);
+    T x = v1.x + ((v2.x - v1.x)*prc);
+    T y = v1.y + ((v2.y - v1.y)*prc);
 
     vOut.x = x;
     vOut.y = y;
@@ -539,12 +539,12 @@ void CMVec3Sqrp(CMVector3D<T> &vOut, const CMVector3D<T> &v1, const CMVector3D<T
 template <class T>
 void CMVec3Cosrp(CMVector3D<T> &vOut, const CMVector3D<T> &v1, const CMVector3D<T> &v2, T factor)
 {   
-    T ft = factor * CMathConst<T>::MATH_PI;
-    T f = (T(1) - MVEC3COS(ft))*T(0.5);
+    T angle = factor * CMathConst<T>::MATH_PI;
+    T prc = (T(1) - MVEC3COS(angle))*T(0.5);
     
-    T x = v1.x + ((v2.x - v1.x)*ft);
-    T y = v1.y + ((v2.y - v1.y)*ft);
-    T z = v1.z + ((v2.z - v1.z)*ft);
+    T x = v1.x + ((v2.x - v1.x)*prc);
+    T y = v1.y + ((v2.y - v1.y)*prc);
+    T z = v1.z + ((v2.z - v1.z)*prc);
 
     vOut.x = x;
     vOut.y = y;
@@ -851,13 +851,13 @@ void CMVec4Sqrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T
 template <class T>
 void CMVec4Cosrp(CMVector4D<T> &vOut, const CMVector4D<T> &v1, const CMVector4D<T> &v2, T factor)
 {   
-    T ft = factor * CMathConst<T>::MATH_PI;
-    T f = (T(1) - MVEC4COS(ft))*T(0.5);
+    T angle = factor * CMathConst<T>::MATH_PI;
+    T prc = (T(1) - MVEC4COS(angle))*T(0.5);
     
-    T x = v1.x + ((v2.x - v1.x)*ft);
-    T y = v1.y + ((v2.y - v1.y)*ft);
-    T z = v1.z + ((v2.z - v1.z)*ft);
-    T w = v1.w + ((v2.w - v1.w)*ft);
+    T x = v1.x + ((v2.x - v1.x)*prc);
+    T y = v1.y + ((v2.y - v1.y)*prc);
+    T z = v1.z + ((v2.z - v1.z)*prc);
+    T w = v1.w + ((v2.w - v1.w)*prc);
 
     vOut.x = x;
     vOut.y = y;
