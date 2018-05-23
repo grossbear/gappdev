@@ -39,6 +39,23 @@ int main()
     conv_to_half_print(CMathConst<float>::MATH_LN2);
     conv_to_half_print(CMathConst<float>::MATH_LN10);
     conv_to_half_print(CMathConst<float>::MATH_PHI);
+
+    thalf hval1(one_half);
+    thalf hval2(minus_one);
+    thalf hval3(fltval1);
+    thalf hval4(fltval2);
+
+    thalf multval1 = hval1*hval2;
+    thalf multval2 = hval1*hval3;
+
+    printf("float multval1 = %.3f\n", (float)multval1);
+    printf("float multval2 = %.3f\n", (float)multval2);
+
+    thalf hrad2deg(CMathConst<float>::MATH_RAD2DEG);
+    printf("half RAD2DEG = %f\n", (float)hrad2deg);
+
+    thalf hsqrt2(CMathConst<float>::MATH_SQRT_2);
+    printf("half SQRT2 = %f\n", (float)hsqrt2);
     
     
     return 0;
