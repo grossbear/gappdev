@@ -23,6 +23,7 @@ mathlib.a: $(patsubst %,%,$(_OBJ))
 # pull in dependency info for *existing* .o files
 -include $(_OBJ:.o=.d)
 
+
 # compile and generate dependency info	
 thalf.o: $(MATHPATH)/Types/thalf.cpp
 	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Types/thalf.cpp
@@ -49,7 +50,7 @@ Perlin.o: $(MATHPATH)/Random/Perlin.cpp
 	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Random/Perlin.cpp > Perlin.d
 	
 Vector.o: $(MATHPATH)/Algebra/VectorInst.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/VectorInst.cpp
+	$(CXX) $(CFLAGS) -D$(VECFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/VectorInst.cpp
 	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(MATHPATH) -c $(MATHPATH)/Algebra/VectorInst.cpp > Vector.d
 	mv VectorInst.o Vector.o
 	
