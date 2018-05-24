@@ -22,7 +22,8 @@ main.o: main.cpp
 	mv main.o $(OBJDIR)/main.o 
 
 mathlib.a:
-	make -C $(MATHLIBPATH)
+	make clean -C $(MATHLIBPATH)
+	make VECFLAGS=MATH_HIGH_PREC_FLOAT_VEC -C $(MATHLIBPATH)
 	cp $(MATHLIBPATH)/mathlib.a $(OBJDIR)/mathlib.a
 
 intnumgen.o: IntNumGen.cpp
