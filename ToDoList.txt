@@ -4,25 +4,47 @@
 #Math Library
 +bit operators in fixed data types
 +fixed trigonometry functions
--half data type class
--math const tfixed32 type
--math const tfixed64 type
--math const thalf type
++half data type class
 -numeric limits tfixed32
 -numeric limits tfixed64
 -numeric limits thalf
--pseudo random number generator (float and integer)
--prng noise, fbm and multifractal functions (float and integer)
--perlin noise (float and integer)
+-half type conversion to float, short uses lookup table
++pseudo random number generator - float values [-1,1]
+-prng noise, fbm and multifractal functions - float values [-1,1]
+-perlin noise - float values [-1,1]
+-pseudo random number generation functions in integer (optional)
+-elementary math supporting tfixed32 type
+-elementary math supporting tfixed64 type
+-elementary math supporting thalf type
+-complex number type class
+-refactor 3DMath functions
+-2D space Line class
+-2DMath functions
+-lerp function
+-s_curve function
+-spline class
+-vectors templates instancing: -tfixed32_16, -tfixed64_16, -thalf, -double, long double
+-matricies templates instancing: -tfixed32_16, -tfixed64_16, -thalf, -double, long double
+-quaternion template instancing: -tfixed32_16, -tfixed64_16, -thalf, -double, long double
+-plane template instancing: -tfixed32_16, -tfixed64_16, -thalf, -double, long double
+-line template instancing: -tfixed32_16, -tfixed64_16, -thalf, -double, long double
+-vector rotation function from game programming gems
 
 #Utils
 -BlockArray
 -BitArray
--HighRes and LowRes Timer
--File and buffers I/O streams
+-HighRes and LowRes Timer on Windows (implement old code)
+-HighRes and LowRes Timer on Linux
+-File and buffers I/O streams (implement old code)
+-FileSystem
+-Q2 pak filesystem reader 
+-Logger system: -logging into files, -logging on console, -logging on gdi console
+-Memory allocators
+ 
 
 #Tools
--Perlin noise tables generator
+-Perlin noise vectors and permutation tables generator
+-Half to float and to short tables generator
 -Font Source file generator (implement old source code)
 
 #Models
@@ -38,15 +60,20 @@
 #WinGDI
 -WinGDI draw shapes and draw image class
 -hBitmap draw app
+-GDI console
 #OpenCL
 -OpenCL device managment class
 #Vulkan
 -Vulkan device managment class
 #Models
--Primitive Shapes Generator Classes
+-Primitive shapes generator classes
+
+#Simple GLRenderer
+-Class uses OpenGL version 1.2 - 1.5
+
 
 #GLRenderer
--Implement old GLRenderer class
+-Implement advanced old GLRenderer classes
 -OpenGL rendering blank screen App
 -Printing example text OpenGL App
 -Loading and rendering MD2 model OpenGL App Sample
@@ -55,8 +82,16 @@
 -Image loading and drawing simple app
 -Implement old Image class and image loading classes
 
+#Image
+-Image class (implement old source code)
+-Images loader system
+-Images input/output formats: -bmp, -tga, -png, -pcx, -jpg, -tif, -dds;
+
 Sample
 --WinAPI program generates noise images, show images in window and save sequnce into files (saves video file?)
 
 --Long term project
--Model Loading Classes System
+-Model Loading Classes System. Suported formats: MD2, MD3, MD5, 3DS, OBJ, SKL, X, PSK-PSA (unreal engine)
+
+usefull links:
+https://github.com/gildor2/UModel
