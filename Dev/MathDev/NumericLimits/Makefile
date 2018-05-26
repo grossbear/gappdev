@@ -3,9 +3,9 @@
 CXX=g++
 CFLAGS=-std=gnu++11
 OBJDIR=obj
-FRAMEWORKPATH = ../../Framework
-MATHPATH = ../../Framework/Base/Math
-MATHLIBPATH = ../../Libs/MathLib
+FRAMEWORKPATH = ../../../Framework
+MATHPATH = ../../../Framework/Base/Math
+MATHLIBPATH = ../../../Libs/MathLib
 
 OSFLAG := 
 

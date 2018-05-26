@@ -3,18 +3,25 @@
 CXX=g++
 CFLAGS=-std=gnu++11
 OBJDIR=obj
-FRAMEWORKPATH = ../../Framework
-MATHPATH = ../../Framework/Base/Math
-MATHLIBPATH = ../../Libs/MathLib
+FRAMEWORKPATH = ../../../Framework
+MATHPATH = ../../../Framework/Base/Math
+MATHLIBPATH = ../../../Libs/MathLib
 
 _OBJ = mathhalfdev.o mathlib.a
 
-all: MakeDir $(_OBJ) mathhalfdev.exe
+PROGNAME := 
+ifeq ($(OS),Windows_NT)
+	PROGNAME += mathhalfdev.exe
+else
+	PROGNAME += mathhalfdev
+endif
+
+all: MakeDir $(_OBJ) $(PROGNAME)
 
 MakeDir:
 	mkdir -p $(OBJDIR)
 
-mathhalfdev.exe: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
+$(PROGNAME): $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 	$(CXX) -o $@ $^
 
 mathlib.a:
@@ -28,4 +35,4 @@ mathhalfdev.o: mathhalfdev.cpp
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJDIR) mathhalfdev.exe
+	rm -rf $(OBJDIR) $(PROGNAME)

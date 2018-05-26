@@ -3,18 +3,25 @@
 CXX=g++
 CFLAGS=-std=gnu++11
 OBJDIR=obj
-FRAMEWORKPATH = ../../Framework
-MATHPATH = ../../Framework/Base/Math
-MATHLIBPATH = ../../Libs/MathLib
+FRAMEWORKPATH = ../../../Framework
+MATHPATH = ../../../Framework/Base/Math
+MATHLIBPATH = ../../../Libs/MathLib
 
 _OBJ = mathlibdev.o mathlib.a
 
-all: MakeDir $(_OBJ) mathlibdev.exe
+PROGNAME := 
+ifeq ($(OS),Windows_NT)
+	PROGNAME += mathlibdev.exe
+else
+	PROGNAME += mathlibdev
+endif
+
+all: MakeDir $(_OBJ) $(PROGNAME)
 
 MakeDir:
 	mkdir -p $(OBJDIR)
 
-mathlibdev.exe: $(patsubst %,$(OBJDIR)/%,$(_OBJ))
+$(PROGNAME): $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 	$(CXX) -o $@ $^
 
 mathlib.a:
@@ -28,4 +35,4 @@ mathlibdev.o: mathlibdev.cpp
 .PHONY: clean
 
 clean:
-	rm -rf $(OBJDIR) mathlibdev.exe
+	rm -rf $(OBJDIR) $(PROGNAME)
