@@ -78,4 +78,4 @@ Quaternion.o: $(MATHPATH)/Algebra/QuatInst.cpp
 
 # remove compilation products
 clean:
-	rm -r *.d *.o mathlib.a
+	rm -rf *.d *.o mathlib.a

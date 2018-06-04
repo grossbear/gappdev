@@ -5,6 +5,7 @@
 #include "Base/Math/MathLib.h"
 #include "IntNumGen.h"
 #include "PerlinTabsGen.h"
+#include "CommonSrc/DataSrcSaver.h"
 
 
 int main()
@@ -19,6 +20,8 @@ int main()
     
     const float *gradTable1D = PerlinGenTabs.GetGradientTable1D();
     const float *gradTable2D = PerlinGenTabs.GetGradientTable2D();
+    
+    //CDataSrcSaver dataSaver("", "table",true);
     
     for(int i = 0; i < 10; i+=2)
     {
