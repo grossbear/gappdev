@@ -8,6 +8,8 @@
 //#include <stdint.h>
 //#include "Base/Common/PlatformTypes.h"
 #include "DataSrcSaver.h"
+#include <utility>
+#include <iostream>
 
 #define FILE_EXTENSION      ".h"
 
@@ -38,7 +40,8 @@ static const char HexTab[16] = {'0','1','2','3','4','5','6','7','8','9','a','b',
 ////////////////////////////////////////////////////////////////////////////////////////////////
 CDataSrcSaver::CDataSrcSaver(const char *path, const char *file_name, bool inline_table):
 mFileStream(NULL),
-m_bWriteTableOnce(inline_table)
+m_bWriteTableOnce(inline_table),
+mSaveStage(SourceStageBegin)
 {
     m_strFileName = std::string(file_name);
     
@@ -95,33 +98,10 @@ bool CDataSrcSaver::WriteIntValue(unsigned int flags, const char *variable_name,
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-// ToDo: Also able to convert to hexadecimal notation
 bool CDataSrcSaver::WriteIntValue(unsigned int flags, const char *variable_name, int value_size,
                                     bool is_signed, const void *value)
-{
-    //String that collects all data strings
-    std::string strvariable;
-    //Starts integer variable form new line and skipping one line
-    strvariable.append("\r\n\r\n");
-    //Getting variables keywords
-    std::string strkeywords = GetVariableKeywords(flags);
-    strvariable.append(strkeywords);
-    //Getting variable type
-    std::string strvartype = GetVariableIntType(value_size);
-    strvariable.append(strvartype);
-    //Getting variable name
-    std::string strvarname = GetVariableName(flags, variable_name);
-    strvariable.append(strvarname);
-    //Putting initialization value into variable
-    strvariable.append(" = ");
-    std::string strvalue = GetStringIntValue(value_size, is_signed, value);
-    strvariable.append(strvalue);
-    strvariable.append(1, ';');
-    
-    //Write variable data into file
-    bool bresult = WriteToFile(strvariable.c_str(),strvariable.size());
-    
-    return bresult;
+{ 
+    return WriteSingleValue(flags,value_size,is_signed,false,variable_name,value);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,28 +119,38 @@ bool CDataSrcSaver::WriteDblValue(unsigned int flags, const char *variable_name,
 // ToDo: Also able to convert to hexadecimal notation
 bool CDataSrcSaver::WriteFltValue(unsigned int flags, const char *variable_name, int value_size, const void *value)
 {
+    return WriteSingleValue(flags,value_size,false,true,variable_name,value);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+bool CDataSrcSaver::WriteSingleValue(unsigned int flags, int value_size, bool is_signed,
+                                        bool is_float, const char *variable_name, const void *value)
+{
     //String that collects all data strings
-    std::string strvariable;
+    std::string strdata;
+    strdata.reserve(2048);
     //Starts integer variable form new line and skipping one line
-    strvariable.append("\r\n\r\n");
-    //Getting variables keywords - remove SRC_VALUE_UNSIGNED_FLAG flag
-    unsigned int fltflags = flags ^ SRC_VALUE_UNSIGNED_FLAG;
-    std::string strkeywords = GetVariableKeywords(fltflags);
-    strvariable.append(strkeywords);
-    //Getting variable type
-    std::string strvartype = GetVariableFloatType(value_size);
-    strvariable.append(strvartype);
-    //Getting variable name
-    std::string strvarname = GetVariableName(flags, variable_name);
-    strvariable.append(strvarname);
-    //Putting initialization value into variable
-    strvariable.append(" = ");
-    std::string strvalue = GetStringFltValue(value_size, value);
-    strvariable.append(strvalue);
-    strvariable.append(1, ';');
+    strdata.append("\r\n\r\n");
+    //Getting string that contains variable type and name
+    std::string strvariable = GetVariableTypeAndName(flags,value_size,is_float,variable_name);
+    strdata.append(strvariable); //Put into string data
     
+    strdata.append(" = "); //Writing equals symbol
+    
+    if(flags & SRC_VALUE_HEXADECIMAL_NOTATION_FLAG) {
+        std::string strvalue = GetStringValueHex(value_size, value);
+        strdata.append(strvalue);
+    }
+    else {
+        std::string strvalue = (is_float) ? (GetStringFltValue(value_size, value)) : 
+                                            (GetStringIntValue(value_size, is_signed, value));
+        strdata.append(strvalue);
+    }
+    
+    strdata.append(1, ';');//End of putting strings into data string
+
     //Write variable data into file
-    bool bresult = WriteToFile(strvariable.c_str(),strvariable.size());
+    bool bresult = WriteToFile(strdata.c_str(),strdata.size());
     
     return bresult;
 }
@@ -174,128 +164,24 @@ bool CDataSrcSaver::WriteIntTable(unsigned int flags, const char *table_name, in
     if(data == NULL) return false;
     if(block_size > 1 && (elem_count % block_size)) return false;
     
-    //String that collects all data strings
-    std::string strvariable;
-    //Starts integer variable form new line and skipping one line
-    strvariable.append("\r\n\r\n");
-    //Getting variables keywords
-    std::string strkeywords = GetVariableKeywords(flags);
-    strvariable.append(strkeywords);
-    //Getting variable type
-    std::string strvartype = GetVariableIntType(value_size);
-    strvariable.append(strvartype);
-    //Getting variable name
-    std::string strvarname = GetVariableName(flags, table_name);
-    strvariable.append(strvarname);
-    
-    //Putting brackets and equal symbols
-    strvariable.append(" []");
-    if(block_size > 1) {
-        std::string strblocksize = std::to_string(block_size);
-        strvariable += "[" + strblocksize + "]";
+    std::string tabledatastr;
+    for(size_t i = 1; i < 201; i++) {
+        std::string strval = std::to_string(i);
+        tabledatastr.append(strval);
+        tabledatastr.append(", ");
     }
-    strvariable.append(" = ");
+    tabledatastr.pop_back();
+    tabledatastr.pop_back();
     
-    //Begin table
-    strvariable.append("\r\n{\r\n");
+    std::list<std::string> splitstrs = GetSplitStrings(tabledatastr);
     
-    //Start putting values into table
-    //--int maxsymbols = MAX_LINE_LEN - 4 - 4;//left border 4 spaces and right border 4 spaces
-    int elemnum = 1;
-    bool firstinline = true;
-    std::string strline;
-    const unsigned char *ucvalues = (const unsigned char*)data;
-    if(block_size > 1) 
-    {
-        while(elemnum <= elem_count) {
-            std::string strblock;
-            strblock.append("{");
-            
-            for(int i = 0; i < block_size; i++) {
-                std::string strvalue = GetStringIntValue(value_size, is_signed, ucvalues);
-                strblock.append(strvalue);
-                strblock.append(",");
-                ucvalues += value_size;
-                elemnum++;
-            }
-            strblock.pop_back();
-            strblock.append("}");
-            
-            if(firstinline) {
-                strline.append(4,0x20);
-                firstinline = false;
-                strline.append(strblock);
-                strline.append(", ");
-                if(strline.size() >= MAX_LINE_LEN - 4) {
-                    strvariable.append(strline);
-                    if(elemnum < elem_count) strvariable.append("\r\n");
-                    strline.clear();
-                    firstinline = true;
-                    
-                    continue;
-                }
-            }
-            
-            if(strline.size() + strblock.size() > MAX_LINE_LEN - 4) {
-                strvariable.append(strline);
-                strvariable.append("\r\n");
-                strvariable.append(4,0x20);
-                strline.clear();
-            }
-            
-            strline.append(strblock);
-            strline.append(", ");
-        }
-        
-        strvariable.pop_back();
-        strvariable.pop_back();
-    }
-    else 
-    {
-        while(elemnum <= elem_count) {
-            std::string strvalue = GetStringIntValue(value_size, is_signed, ucvalues);
-            if(firstinline) { 
-                strline.append(4,0x20); 
-                firstinline = false;
-                strline.append(strvalue);
-                strline.append(", ");
-                if(strline.size() >= MAX_LINE_LEN - 4) {
-                    strvariable.append(strline);
-                    if(elemnum < elem_count) strvariable.append("\r\n");
-                    strline.clear();
-                    firstinline = true;
-                    
-                    ucvalues += value_size;
-                    elemnum++;
-                    continue;
-                }
-            }
-            
-            if(strline.size() + strvalue.size() > MAX_LINE_LEN - 4) {
-                strvariable.append(strline);
-                strvariable.append("\r\n");
-                strline.clear();
-                firstinline = true;
-                continue;
-            }
-            
-            strline.append(strvalue);
-            strline.append(", ");
-            
-            ucvalues += value_size;
-            elemnum++;
-        }
-        
-        strvariable.pop_back();
-        strvariable.pop_back();
-
+    for(auto it = splitstrs.begin(); it != splitstrs.end(); it++) {
+        std::string strline = *it;
+        strline += "\r\n";
+        WriteToFile(strline.c_str(), strline.size());
     }
     
-    
-    //End table
-    strvariable.append("\r\n};");
-    
-    return false;
+    return true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -307,10 +193,13 @@ bool CDataSrcSaver::WriteFltTable(unsigned int flags, const char *table_name, in
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //ToDo: split into multiple lines
-bool CDataSrcSaver::WriteFileHeader(const char *description, const char *programme_info)
+bool CDataSrcSaver::WriteFileHeaderInfo(const char *description, const char *programme_info)
 {
+    if(mSaveStage != SourceStageBegin) return false; //Info in header had already been written or user already started writing tables data
+    
     std::string strcommentline(MAX_LINE_LEN,'/');
     std::string strheader = strcommentline;
+    strheader += "\r\n";
     strheader += "//  ";
     strheader += m_strFileName;
     strheader += FILE_EXTENSION;
@@ -335,9 +224,12 @@ bool CDataSrcSaver::WriteFileHeader(const char *description, const char *program
     }
     
     strheader += strcommentline;
+    strheader += "\r\n";
     
     //Write header info 
     bool bresult = WriteToFile(strheader.c_str(),strheader.size());
+    
+    mSaveStage = SourceStageInfoWritten;
     
     return bresult;
 }
@@ -379,7 +271,7 @@ bool CDataSrcSaver::OpenSrcFile(const char *path, const char *file_name)
     return true;
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////int///////////////////////////
 bool CDataSrcSaver::CloseSrcFile()
 {
     if(mFileStream == NULL) return false;
@@ -395,6 +287,35 @@ bool CDataSrcSaver::WriteToFile(const char *data, size_t size)
 {
     size_t writtensize = fwrite(data, size, 1, mFileStream);
     return writtensize == size;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+std::string CDataSrcSaver::GetVariableTypeAndName(unsigned int flags, int value_size,
+                                            bool is_float, const char *variable_name)
+{
+    //String for collecting variable type and name strings
+    std::string strvariable;
+    strvariable.reserve(256);
+    
+    //Remove SRC_VALUE_UNSIGNED_FLAG flag for float variable
+    unsigned int newflags = (is_float) ? (flags ^ SRC_VALUE_UNSIGNED_FLAG) : (flags);
+    std::string (CDataSrcSaver::*vartypefunc)(int) = (is_float) ? 
+                                                        (&CDataSrcSaver::GetVariableFloatType) : 
+                                                        (&CDataSrcSaver::GetVariableIntType);
+    
+    //Getting variables keywords
+    std::string strkeywords = GetVariableKeywords(newflags);
+    strvariable.append(strkeywords);
+    
+    //Getting variable type
+    std::string strvartype = (*this.*vartypefunc)(value_size);
+    strvariable.append(strvartype);
+    
+    //Getting variable name
+    std::string strvarname = GetVariableName(flags, variable_name);
+    strvariable.append(strvarname);
+    
+    return strvariable;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -531,4 +452,115 @@ std::string CDataSrcSaver::GetStringValueHex(int value_size, const void *value)
     
     return strvalue;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//Split data string in multiple lines
+std::list<std::string> CDataSrcSaver::GetSplitStrings(const std::string &strdata)
+{
+    size_t maxsymbols = MAX_LINE_LEN - 8;//left border 4 spaces and right border 4 spaces
+    std::list<std::string> splitstr;
+
+    const std::string strsymbs({0x20,'\r','\n','\t',0});
+    size_t infpos = std::string::npos;
+
+    size_t pos1,searchpos,prevpos;
+    bool searchnewline = true;
+    SetNextPos(strdata,strsymbs,0,pos1,searchpos,prevpos);
+    
+    unsigned itercnt = 0;
+    while(true)
+    {
+        size_t newpos = strdata.find_first_of(strsymbs,searchpos);
+        if(newpos == std::string::npos) {
+            size_t strlength = strdata.size() - pos1;
+            bool breakline = strlength > maxsymbols && prevpos != infpos;
+            std::string strline;
+            if(breakline) {
+                strline = strdata.substr(pos1,prevpos - pos1); 
+                SetNextPos(strdata, strsymbs, prevpos, pos1,searchpos,prevpos);
+            }
+            else {
+                strline = strdata.substr(pos1);
+            }
+            RemoveUslessChars(strline);
+            splitstr.push_back(strline);
+            if(breakline) continue;
+           
+            break;
+        }
+        
+        char atchar = strdata.at(newpos);
+        size_t strlength = newpos - pos1;
+        bool newline = (atchar == '\r' || atchar == '\n');
+        bool exceedmaxsymbs = (strlength > maxsymbols);
+        bool breakline = exceedmaxsymbs || newline;
+        if(breakline) {
+            size_t lastpos = (exceedmaxsymbs && prevpos != infpos) ? (prevpos) : (newpos);
+
+            std::string strline = strdata.substr(pos1,lastpos-pos1);
+            RemoveUslessChars(strline);
+            splitstr.push_back(strline);
+            
+            size_t nextpos = (!newline && prevpos != infpos) ? (prevpos) : (newpos);
+            SetNextPos(strdata, strsymbs, nextpos, pos1,searchpos,prevpos);
+            if(searchpos == infpos) break;
+            
+            continue;  
+        }
+        
+        prevpos = newpos;
+        searchpos = strdata.find_first_not_of(strsymbs,newpos);
+        
+        //also search between if there is no new line characters
+        if(searchnewline) {
+            size_t newlnpos = strdata.find_first_of({'\r','\n',0},newpos);
+            if(newlnpos != infpos && newlnpos < searchpos) {
+                searchpos = newlnpos;
+            }
+            searchnewline = (newlnpos != infpos);
+        }
+       
+        itercnt++;
+        if(itercnt > 0x7fffffff) {
+            std::cerr << "Reached large amount of loop iterations\nLoop is in infinite cycle" << std::endl;
+            break;
+        }
+    }
+
+    return splitstr;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// Private functions
+/////////////////////////////////////////////////////////////////////////////////////////////////
+void CDataSrcSaver::SetNextPos(const std::string &strdata, const std::string &symbs, size_t startpos, 
+                    size_t &nextpos, size_t &searchpos, size_t &prevpos)
+{
+    nextpos = strdata.find_first_not_of(symbs,startpos);
+    searchpos = nextpos;
+    prevpos = std::string::npos;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+void CDataSrcSaver::RemoveUslessChars(std::string &strline)
+{
+    size_t tabpos = strline.find('\t');
+    while(tabpos != std::string::npos) {
+        strline[tabpos] = 0x20;
+        tabpos = strline.find('\t');
+    }
+    
+    size_t nlpos = strline.find({'\r','\n',0});
+    while(nlpos != std::string::npos) {
+        strline = strline.erase(nlpos,1);
+        nlpos = strline.find({'\r','\n',0});
+    }
+    
+    size_t spcpos = strline.find({0x20,0x20});
+    while(spcpos != std::string::npos) {
+        strline = strline.erase(spcpos,1);
+        spcpos = strline.find({0x20,0x20});
+    }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////

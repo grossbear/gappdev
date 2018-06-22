@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
+#include <list>
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // Write variables flags
 #define SRC_VALUE_STATIC_FLAG                   0x1
@@ -17,6 +19,7 @@
 #define SRC_VALUE_UNSIGNED_FLAG                 0x4
 #define SRC_VALUE_FILENAME_FLAG                 0x8
 #define SRC_VALUE_HEXADECIMAL_NOTATION_FLAG     0x10
+//#define SRC_VALUE_SCIENTIFIC_NOTATION_FLAG      0x20
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 class CDataSrcSaver
@@ -43,7 +46,7 @@ public:
                         int elem_count, int block_size, const void *data);
     bool WriteFltTable(unsigned int flags, const char *table_name, int val_size, int elem_count, int block_size, const void *data);
     
-    bool WriteFileHeader(const char *description, const char *programme_info);
+    bool WriteFileHeaderInfo(const char *description, const char *programme_info);
     
     bool WriteBitmapData(unsigned int flags, const char *table_name, int *sizes, unsigned int count, 
                         const char *descriptions, const unsigned char *data);
@@ -54,11 +57,28 @@ protected:
     FILE *mFileStream;
     std::string m_strFileName;
     bool m_bWriteTableOnce;
+    std::vector<std::string> m_VarNamesVec;
+    
+    enum SourceSavingStage {
+        SourceStageBegin = 0,
+        SourceStageInfoWritten = 1,
+        SourceStageInitListWritten = 2,
+    };
+    
+    SourceSavingStage mSaveStage;
     
     /////////////////////////////////////////////////////////////////////////////////////////////////
     bool OpenSrcFile(const char *path, const char *file_name);
     bool CloseSrcFile();
     bool WriteToFile(const char *data, size_t size);
+    
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    bool WriteSingleValue(unsigned int flags, int value_size, bool is_signed,
+                                        bool is_float, const char *variable_name, const void *value);
+                                        
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    std::string GetVariableTypeAndName(unsigned int flags, int value_size,
+                                        bool is_float, const char *variable_name);
     /////////////////////////////////////////////////////////////////////////////////////////////////
     std::string GetVariableKeywords(unsigned int flags);
     std::string GetVariableIntType(int value_size);
@@ -69,6 +89,19 @@ protected:
     std::string GetStringFltValue(int value_size, const void *value);
     std::string GetStringValueHex(int value_size, const void *value);
     /////////////////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    //Split data string in multiple lines
+    std::list<std::string> GetSplitStrings(const std::string &strdata);
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+
+private:
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    inline void SetNextPos(const std::string &strdata, const std::string &symbs, size_t startpos, 
+                    size_t &nextpos, size_t &searchpos, size_t &prevpos);
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    void RemoveUslessChars(std::string &strline);
+
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
