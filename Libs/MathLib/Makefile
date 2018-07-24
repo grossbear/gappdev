@@ -7,6 +7,10 @@ LDFLAGS=-lSDL -lSDL_gfx
 OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 MATHPATH = ../../Framework/Base/Math
+ 
+ifndef VECFLAGS
+	VECFLAGS = MATH_HIGH_PREC_FLOAT_VEC
+endif
 
 _OBJ = thalf.o ElemFunc.o Sqrt.o Trigonometry.o Prng.o Perlin.o\
 Vector.o Plane.o Matrix.o Quaternion.o 3DMath.o
