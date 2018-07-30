@@ -1,3 +1,4 @@
+// Headers generation test programme
 #include <stdio.h>
 #include "testsave.h"
 

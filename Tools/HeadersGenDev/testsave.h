@@ -1,3 +1,4 @@
+// Test functions for creating data headers
 
-// Saving test int table 
+// Test int table save function
 void test_save_int_table();

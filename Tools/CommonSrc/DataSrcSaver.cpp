@@ -10,6 +10,7 @@
 #include "DataSrcSaver.h"
 #include <utility>
 #include <iostream>
+#include <stdio.h>
 
 #define FILE_EXTENSION      ".h"
 
@@ -159,25 +160,56 @@ bool CDataSrcSaver::WriteSingleValue(unsigned int flags, int value_size, bool is
 bool CDataSrcSaver::WriteIntTable(unsigned int flags, const char *table_name, int value_size, bool is_signed, 
                                     int elem_count, int block_size, const void *data)
 {
-    if(table_name == NULL) return false;
+    if(table_name == nullptr) return false;
     if(elem_count < 2) return false;
-    if(data == NULL) return false;
+    if(data == nullptr) return false;
     if(block_size > 1 && (elem_count % block_size)) return false;
-    
+
+
+    bool bhex = flags & SRC_VALUE_HEXADECIMAL_NOTATION_FLAG;
+
+    const unsigned char *dataptr = reinterpret_cast<const unsigned char*>(data);
+
     std::string tabledatastr;
-    for(size_t i = 1; i < 201; i++) {
-        std::string strval = std::to_string(i);
-        tabledatastr.append(strval);
-        tabledatastr.append(", ");
+    if(block_size > 1) {
+        int blockcnt = elem_count / block_size;
+        for(int i = 0; i < blockcnt; i++) {
+            std::string blockstr("{");
+            for(int j = 0; j < block_size; j++) {
+                std::string strval = (bhex) ? (GetStringValueHex(value_size,dataptr)) :
+                                                 (GetStringIntValue(value_size,is_signed,dataptr));
+                blockstr.append(strval);
+                blockstr.append(",");
+                dataptr += value_size;
+            }
+            blockstr.pop_back();
+            blockstr.append("}, ");
+            tabledatastr.append(blockstr);
+        }
     }
+    else {
+        for(int i = 0; i < elem_count; i++)
+        {
+            std::string strval = (bhex) ? (GetStringValueHex(value_size,dataptr)) :
+                                             (GetStringIntValue(value_size,is_signed,dataptr));
+            tabledatastr.append(strval);
+            tabledatastr.append(", ");
+            dataptr += value_size;
+        }
+    }
+
     tabledatastr.pop_back();
     tabledatastr.pop_back();
     
     std::list<std::string> splitstrs = GetSplitStrings(tabledatastr);
     
+    std::string newline("\r\n");
+    WriteToFile(newline.c_str(), newline.size());
+
     for(auto it = splitstrs.begin(); it != splitstrs.end(); it++) {
         std::string strline = *it;
-        strline += "\r\n";
+        if(m_bWriteTableOnce==false) {strline.insert(0,4,0x20);}
+        strline.append("\r\n");
         WriteToFile(strline.c_str(), strline.size());
     }
     
@@ -437,12 +469,12 @@ std::string CDataSrcSaver::GetStringValueHex(int value_size, const void *value)
     std::string strvalue;
     strvalue.append("0x");
     
-    const unsigned char *ucvaluetab = (const unsigned char*)value;
+    const unsigned char *ucvaluetab = reinterpret_cast<const unsigned char*>(value);
     for(int i = value_size-1; i >= 0; i--) 
     {
         unsigned char uchsymbol = ucvaluetab[i];
-        unsigned char valueidx2 = (uchsymbol >> 4) & 0x1111b;
-        unsigned char valueidx1 = (uchsymbol) & 0x1111b;
+        unsigned char valueidx2 = (uchsymbol >> 4) & 0xf;
+        unsigned char valueidx1 = (uchsymbol) & 0xf;
         
         char leftsymbol = HexTab[valueidx2];
         char rightsymbol = HexTab[valueidx1];

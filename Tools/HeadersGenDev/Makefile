@@ -5,13 +5,21 @@ CFLAGS=-std=gnu++11
 FRAMEWORKPATH = ../../Framework
 MAINTOOLSPATH = ../
 TOOLSCOMMONSRCPATH = ../CommonSrc
-HEADERDIR = headers
-OBJDIR=obj
 
 DATASRC_H = $(TOOLSCOMMONSRCPATH)/DataSrcSaver.h
 DATASRC_CPP = $(TOOLSCOMMONSRCPATH)/DataSrcSaver.cpp
 
-_OBJ = datasrcsaver.o testsave.o main.o
+HEADERDIR = headers
+headdir_tgt = $(HEADERDIR)-$(wildcard $(HEADERDIR))
+headdir_present = $(HEADERDIR)-$(HEADERDIR)
+headdir_absent = $(HEADERDIR)-
+
+OBJDIR = obj
+objdir_tgt = $(OBJDIR)-$(wildcard $(OBJDIR))
+objdir_present = $(OBJDIR)-$(OBJDIR)
+objdir_absent = $(OBJDIR)-
+
+_OBJ = obj/datasrcsaver.o obj/testsave.o obj/main.o
 
 PROGNAME :=
 ifeq ($(OS),Windows_NT)
@@ -20,30 +28,42 @@ else
 	PROGNAME += headgen
 endif
 
-all: MakeDir $(_OBJ) $(PROGNAME)
 
+.PHONY: all
 
-MakeDir:
-	@echo "Making obj directory"	
-	@mkdir -p $(OBJDIR)
-	@echo "Making headers directory"
+all:  | $(headdir_tgt) $(objdir_tgt) $(_OBJ) $(PROGNAME)
+
+$(headdir_present):
+	@echo "Directory '$(HEADERDIR)' exists, no need to create it again."
+
+$(headdir_absent):
+	@echo "Directory '$(HEADERDIR)' does not exists."
+	@echo "Creating directory '$(HEADERDIR)'."
 	@mkdir -p $(HEADERDIR)
 
-datasrcsaver.o: $(DATASRC_CPP) $(DATASRC_H)
-	$(CXX) $(CFLAGS) -c $<
-	mv DataSrcSaver.o $(OBJDIR)/datasrcsaver.o
+$(objdir_present):
+	@echo "Directory '$(OBJDIR)' exists, no need to create it again."
 
-testsave.o: testsave.cpp testsave.h $(DATASRC_H) $(DATASRC_CPP)
-	$(CXX) $(CFLAGS) -I$(MAINTOOLSPATH) -c $<
-	mv testsave.o $(OBJDIR)/testsave.o
+$(objdir_absent):
+	@echo "Directory '$(OBJDIR)' does not exists."
+	@echo "Creating directory '$(OBJDIR)'."
+	@mkdir -p $(OBJDIR)
 
-main.o: main.cpp testsave.cpp testsave.h $(DATASRC_H) $(DATASRC_CPP)
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -c main.cpp
-	mv main.o $(OBJDIR)/main.o
+obj/datasrcsaver.o: $(DATASRC_CPP) $(DATASRC_H)
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(MAINTOOLSPATH) -c $(DATASRC_CPP) -o $@
 
-$(PROGNAME): $(patsubst %,$(OBJDIR)/%,$(_OBJ))
-	@echo "Compiling programme:$(PROGNAME)"
-	$(CXX) -o $@ $^
+obj/testsave.o: testsave.cpp testsave.h
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(MAINTOOLSPATH) -c testsave.cpp -o $@
+
+obj/main.o: main.cpp testsave.h
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(MAINTOOLSPATH) -c main.cpp -o $@
+
+$(PROGNAME): $(_OBJ)
+	@echo "Building programme:$(PROGNAME)"
+	@$(CXX) $(CFLAGS) -o $@ $^
 
 
 .PHONY: clean
