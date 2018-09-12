@@ -7,37 +7,44 @@ OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 UTILSPATH = ../../Framework/Base/Utils
 
-_OBJ = BitArray.o FileStream.o Logger.o MemAlloc.o
+_OBJ = $(OBJDIR)/BitArray.o $(OBJDIR)/FileStream.o $(OBJDIR)/Logger.o $(OBJDIR)/MemAlloc.o
 
-all: $(_OBJ) utilslib.a
+all: MakeDir $(_OBJ) utilslib.a
 
 MakeDir:
-	mkdir -p $(OBJDIR)
+	@echo "Creating $(OBJDIR) directory."
+	@mkdir -p $(OBJDIR)
 	
 # link
-utilslib.a: $(patsubst %,%,$(_OBJ))
-	$(ARCH) rcs $@ $^
+utilslib.a: $(patsubst %, %, $(_OBJ))
+	@echo "Building static library: $@"
+	@$(ARCH) rcs $@ $^
 
 # compile and generate dependency info	
-BitArray.o: $(UTILSPATH)/Arrays/BitArray.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/Arrays/BitArray.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/Arrays/BitArray.cpp > BitArray.d
+$(OBJDIR)/BitArray.o: $(UTILSPATH)/Arrays/BitArray.cpp $(UTILSPATH)/Arrays/BitArray.h
+	@echo "Compiling file: $<" 
+	@$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $< -o $@
+#	@mv BitArray.o $(OBJDIR)/BitArray.o
 	
-FileStream.o: $(UTILSPATH)/IOStream/FileStream.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/IOStream/FileStream.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/IOStream/FileStream.cpp > FileStream.d
+$(OBJDIR)/FileStream.o: $(UTILSPATH)/IOStream/FileStream.cpp $(UTILSPATH)/IOStream/FileStream.h
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $< -o $@
+#	@mv FileStream.o $(OBJDIR)/FileStream.o
 
-Logger.o: $(UTILSPATH)/Logger/Logger.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/Logger/Logger.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/Logger/Logger.cpp > Logger.d
+$(OBJDIR)/Logger.o: $(UTILSPATH)/Logger/Logger.cpp $(UTILSPATH)/Logger/Logger.cpp
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $< -o $@
+#	@mv Logger.o $(OBJDIR)/Logger.o
 
-MemAlloc.o: $(UTILSPATH)/MemAlloc/memory_allocator_new.cpp
-	$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/MemAlloc/memory_allocator_new.cpp
-	$(CXX) -MM $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $(UTILSPATH)/MemAlloc/memory_allocator_new.cpp > memory_allocator_new.d
-	mv memory_allocator_new.o MemAlloc.o
+$(OBJDIR)/MemAlloc.o: $(UTILSPATH)/MemAlloc/memory_allocator_new.cpp $(UTILSPATH)/MemAlloc/memory_allocator_new.h\
+$(UTILSPATH)/MemAlloc/memory_allocator.h
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $< -o $@
+#	@mv memory_allocator_new.o $(OBJDIR)/MemAlloc.o
 
 .PHONY: clean
 
 # remove compilation products
 clean:
-	rm -r *.d *.o utilslib.a
+	@echo "Removing $(OBJDIR) directory and utilslib.a library."
+	@rm -rf $(OBJDIR) utilslib.a
