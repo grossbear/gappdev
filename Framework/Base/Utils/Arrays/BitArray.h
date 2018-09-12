@@ -4,8 +4,6 @@
 // A One Dimentional Array Of Bits
 /////////////////////////////////////////////////////////////////////////////
 
-#pragma once
-
 #ifndef _BITARRAY_H_
 #define _BITARRAY_H_
 
