@@ -3,16 +3,28 @@
 CXX=g++
 ARCH=ar
 CFLAGS=-std=gnu++11 -Wall
-OBJDIR=obj
 FRAMEWORKPATH = ../../Framework
 UTILSPATH = ../../Framework/Base/Utils
 
-_OBJ = $(OBJDIR)/BitArray.o $(OBJDIR)/FileStream.o $(OBJDIR)/Logger.o $(OBJDIR)/MemAlloc.o
+OBJDIR=obj
+objdir_tgt = $(OBJDIR)-$(wildcard $(OBJDIR))
+objdir_present = $(OBJDIR)-$(OBJDIR)
+objdir_absent = $(OBJDIR)-
 
-all: MakeDir $(_OBJ) utilslib.a
+_OBJ = $(OBJDIR)/BitArray.o $(OBJDIR)/FileStream.o $(OBJDIR)/Logger.o $(OBJDIR)/MemAlloc.o $(OBJDIR)/Timer.o
 
-MakeDir:
-	@echo "Creating $(OBJDIR) directory."
+all: | $(objdir_tgt) $(_OBJ) utilslib.a
+
+#MakeDir:
+#	@echo "Creating $(OBJDIR) directory."
+#	@mkdir -p $(OBJDIR)
+	
+$(objdir_present):
+	@echo "Directory '$(OBJDIR)' exists, no need to create it again."
+
+$(objdir_absent):
+	@echo "Directory '$(OBJDIR)' does not exists."
+	@echo "Creating directory '$(OBJDIR)'."
 	@mkdir -p $(OBJDIR)
 	
 # link
@@ -42,9 +54,13 @@ $(UTILSPATH)/MemAlloc/memory_allocator.h
 	@$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $< -o $@
 #	@mv memory_allocator_new.o $(OBJDIR)/MemAlloc.o
 
+$(OBJDIR)/Timer.o: $(UTILSPATH)/Timer/Timer.cpp $(UTILSPATH)/Timer/Timer.h
+	@echo "Compiling file: $<"
+	@$(CXX) $(CFLAGS) -I$(FRAMEWORKPATH) -I$(UTILSPATH) -c $< -o $@
+
 .PHONY: clean
 
 # remove compilation products
 clean:
-	@echo "Removing $(OBJDIR) directory and utilslib.a library."
+	@echo "Removing $(OBJDIR) directory and utilslib.a library"
 	@rm -rf $(OBJDIR) utilslib.a
